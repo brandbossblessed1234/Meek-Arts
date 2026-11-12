@@ -369,13 +369,20 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
             <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-amber-500/50 shadow-[0_0_25px_rgba(212,175,55,0.35)] mx-auto mb-3 bg-neutral-950 p-0.5">
               <img
                 src="/assets/aistudio/759034263_973317582408340_6684353305294085176_n__1__27edce82.jpg"
-                alt="Meek Arts"
+                alt="MEEK Studio 3D Art"
                 className="w-full h-full object-cover rounded-full"
               />
             </div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-amber-400 block">
-              Meek Arts – 3D Art
+            <span className="font-brand text-sm font-black uppercase tracking-[0.28em] text-neutral-100 block">
+              MEEK <span className="text-amber-400">STUDIO</span>
             </span>
+            <div className="flex items-center justify-center gap-2 w-32 mx-auto pt-0.5">
+              <span className="h-[1px] bg-gradient-to-r from-transparent to-amber-500/60 flex-1" />
+              <span className="font-brand text-[9px] font-bold uppercase tracking-[0.28em] text-amber-400">
+                3D ART
+              </span>
+              <span className="h-[1px] bg-gradient-to-l from-transparent to-amber-500/60 flex-1" />
+            </div>
             <h1 className="font-heading text-xl font-bold uppercase tracking-wide text-neutral-100">
               Studio Owner Portal
             </h1>
@@ -517,7 +524,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
             </div>
             <div>
               <h1 className="font-heading text-sm sm:text-base font-bold uppercase text-neutral-100 tracking-wider flex items-center gap-2">
-                <span>MEEK ARTS</span>
+                <span>MEEK STUDIO</span>
                 <span className="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/40 text-[10px] font-mono">
                   ADMIN
                 </span>
@@ -658,7 +665,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
                   Studio Dashboard Overview
                 </h2>
                 <p className="text-xs text-neutral-400 mt-1">
-                  Live metrics for Meek Arts web operations and client engagement.
+                  Live metrics for MEEK Studio 3D Art web operations and client engagement.
                 </p>
               </div>
 

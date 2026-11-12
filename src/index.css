@@ -6,6 +6,8 @@
     --font-heading: 'Cinzel', serif;
     --font-sans: 'Plus Jakarta Sans', sans-serif;
     --font-serif: 'Playfair Display', serif;
+    --font-brand: 'Montserrat', sans-serif;
+    --font-syncopate: 'Syncopate', sans-serif;
   }
 
   html {
@@ -25,6 +27,28 @@
     font-family: var(--font-heading);
     letter-spacing: 0.05em;
   }
+
+  .font-brand {
+    font-family: var(--font-brand);
+  }
+
+  .font-syncopate {
+    font-family: var(--font-syncopate);
+  }
+}
+
+/* 3D Bronze Sculpted Lettering matching official brand artwork */
+.bronze-3d-text {
+  background: linear-gradient(180deg, #f0ca85 0%, #cca04e 45%, #8f6524 85%, #593e14 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
+}
+
+.bronze-3d-light {
+  background: linear-gradient(180deg, #fae2b1 0%, #deb05a 50%, #996e27 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* Custom Gold & Metallic Accents */

@@ -28,7 +28,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onInquireServi
             OUR CUSTOM 3D SERVICES
           </h2>
           <p className="mt-3 text-neutral-400 text-sm sm:text-base font-light">
-            From initial digital conceptualization to physical fabrication, discover the range of bespoke 3D art solutions crafted by Meek Arts.
+            From initial digital conceptualization to physical fabrication, discover the range of bespoke 3D art solutions crafted by MEEK Studio 3D Art.
           </p>
         </div>
 

@@ -104,7 +104,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ prefilledArtwork
           </div>
 
           <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-extrabold uppercase tracking-wide text-neutral-100">
-            CONNECT WITH MEEK ARTS
+            CONNECT WITH MEEK STUDIO 3D ART
           </h2>
           <p className="mt-3 text-neutral-400 text-sm sm:text-base font-light">
             Discuss your custom 3D sculpture project with our artist directly, request quotations, or visit our official social channel.
@@ -121,7 +121,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ prefilledArtwork
               
               <div>
                 <h3 className="font-heading text-lg font-bold uppercase text-neutral-100 tracking-wide">
-                  {settings.businessName || 'MEEK ARTS'}
+                  {settings.businessName || 'MEEK Studio 3D Art'}
                 </h3>
                 <p className="text-xs uppercase tracking-widest text-amber-400 font-semibold mt-1">
                   {settings.location || 'Iloilo City, Philippines'}
@@ -236,7 +236,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ prefilledArtwork
                       Inquiry Successfully Submitted!
                     </h4>
                     <p className="text-xs text-emerald-300/90 mt-1 leading-relaxed">
-                      Thank you! Your project inquiry has been saved to the Meek Arts database. We will review your request and get in touch with you shortly.
+                      Thank you! Your project inquiry has been saved to the MEEK Studio 3D Art database. We will review your request and get in touch with you shortly.
                     </p>
                     <span className="inline-block mt-2 font-mono text-[11px] text-emerald-400/80">
                       Reference ID: {successId}
