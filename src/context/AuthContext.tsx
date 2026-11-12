@@ -41,10 +41,10 @@ const DEFAULT_ADMIN_PASSWORD = 'meekstudio3dart';
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState<boolean>(() => {
-    return sessionStorage.getItem('meek_admin_auth') === 'true';
+    return sessionStorage.getItem('meek_admin_auth') === 'true' || localStorage.getItem('meek_admin_auth') === 'true';
   });
   const [adminUsername, setAdminUsername] = useState<string | null>(() => {
-    return sessionStorage.getItem('meek_admin_username') || null;
+    return sessionStorage.getItem('meek_admin_username') || localStorage.getItem('meek_admin_username') || null;
   });
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -78,7 +78,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
       } else {
         // Keep session if direct username/password login was authenticated in this session
-        const sessionActive = sessionStorage.getItem('meek_admin_auth') === 'true';
+        const sessionActive = sessionStorage.getItem('meek_admin_auth') === 'true' || localStorage.getItem('meek_admin_auth') === 'true';
         if (!sessionActive) {
           setIsAdmin(false);
           setAdminUsername(null);
@@ -107,6 +107,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setAdminUsername(cleanUser);
       sessionStorage.setItem('meek_admin_auth', 'true');
       sessionStorage.setItem('meek_admin_username', cleanUser);
+      localStorage.setItem('meek_admin_auth', 'true');
+      localStorage.setItem('meek_admin_username', cleanUser);
       return true;
     } else {
       setError('Invalid username or password. Please verify your credentials and try again.');
@@ -170,6 +172,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setError(null);
       sessionStorage.removeItem('meek_admin_auth');
       sessionStorage.removeItem('meek_admin_username');
+      localStorage.removeItem('meek_admin_auth');
+      localStorage.removeItem('meek_admin_username');
       setIsAdmin(false);
       setAdminUsername(null);
       if (auth.currentUser) {

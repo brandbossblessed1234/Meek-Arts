@@ -348,7 +348,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
   const totalPhotosCount = projects.reduce((acc, p) => acc + (p.images ? p.images.length : 1), 0) + mediaItems.length;
 
   // Unauthenticated or Non-Admin Screen
-  if (!user || !isAdmin) {
+  if (!isAdmin) {
     return (
       <div className="min-h-screen bg-neutral-950 flex flex-col items-center justify-center p-4 sm:p-6 text-neutral-100">
         
