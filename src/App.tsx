@@ -86,6 +86,7 @@ export default function App() {
                     setPrefilledArtworkType('Custom 3D Sculpture');
                     setInquiryModalOpen(true);
                   }} 
+                  onNavigateToAdmin={() => navigateTo('/admin')}
                 />
 
                 {/* Portfolio / Finished Works Gallery */}

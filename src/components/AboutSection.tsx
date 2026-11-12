@@ -71,7 +71,7 @@ export const AboutSection: React.FC = () => {
             <div className="rounded-2xl overflow-hidden border border-amber-500/25 bg-neutral-900 relative shadow-2xl group">
               <div className="aspect-[4/3] w-full overflow-hidden">
                 <img
-                  src="/src/assets/images/meek_studio_workshop_1794441975687.jpg"
+                  src="/assets/aistudio/773167137_984629687943796_2392283727810284078_n_8d92f796.jpg"
                   alt="Meek Studio 3D Art Workshop"
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"

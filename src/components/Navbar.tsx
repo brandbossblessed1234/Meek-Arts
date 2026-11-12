@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { MeekLogo } from './MeekLogo';
-import { Menu, X, Shield, PhoneCall } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import { Menu, X, PhoneCall } from 'lucide-react';
 
 interface NavbarProps {
   onOpenOrderModal: () => void;
@@ -10,16 +9,15 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal, onNavigateToAdmin }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { user, isAdmin } = useAuth();
 
   return (
     <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-neutral-950/85 border-b border-neutral-900/80 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-8">
         
-        {/* Zone 1: Brand Wordmark */}
-        <a href="#" className="flex items-center shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded">
-          <MeekLogo size="md" />
-        </a>
+        {/* Zone 1: Brand Wordmark with 5-click Admin Backdoor */}
+        <div className="flex items-center shrink-0">
+          <MeekLogo size="md" onAdminTrigger={onNavigateToAdmin} />
+        </div>
 
         {/* Zone 2: 4–5 concise single-line navigation links */}
         <nav className="hidden md:flex items-center gap-8 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-300">
@@ -40,17 +38,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal, onNavigateToAd
           </a>
         </nav>
 
-        {/* Zone 3: 1 Primary Action + Admin link */}
+        {/* Zone 3: 1 Primary Action */}
         <div className="hidden sm:flex items-center gap-4 shrink-0">
-          <button
-            onClick={onNavigateToAdmin}
-            title={user ? (isAdmin ? 'Admin Dashboard (Active)' : 'Account') : 'Admin Portal'}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-neutral-400 hover:text-amber-300 border border-neutral-800 hover:border-amber-500/40 rounded transition-colors whitespace-nowrap"
-          >
-            <Shield className="w-3.5 h-3.5 text-amber-500" />
-            <span className="hidden lg:inline">{isAdmin ? 'Dashboard' : 'Admin'}</span>
-          </button>
-
           <button
             onClick={onOpenOrderModal}
             className="px-5 py-2.5 text-xs font-bold tracking-[0.14em] uppercase text-neutral-950 bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 hover:from-amber-200 hover:to-amber-400 rounded shadow-[0_0_20px_rgba(212,175,55,0.25)] hover:shadow-[0_0_25px_rgba(212,175,55,0.4)] transition-all transform active:scale-95 whitespace-nowrap shrink-0"
@@ -61,13 +50,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal, onNavigateToAd
 
         {/* Mobile menu button */}
         <div className="flex md:hidden items-center gap-2">
-          <button
-            onClick={onNavigateToAdmin}
-            className="p-2 text-neutral-400 hover:text-amber-400"
-            title="Admin Login"
-          >
-            <Shield className="w-4 h-4 text-amber-500" />
-          </button>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"

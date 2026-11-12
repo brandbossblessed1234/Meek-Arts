@@ -1,16 +1,22 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 
 interface MeekLogoProps {
   className?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
   showWordmark?: boolean;
+  onAdminTrigger?: () => void;
 }
 
 export const MeekLogo: React.FC<MeekLogoProps> = ({ 
   className = '', 
   size = 'md',
-  showWordmark = true 
+  showWordmark = true,
+  onAdminTrigger
 }) => {
+  const [clickCount, setClickCount] = useState(0);
+  const [showHint, setShowHint] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
   const iconSizes = {
     sm: 'w-7 h-7',
     md: 'w-9 h-9',
@@ -32,19 +38,55 @@ export const MeekLogo: React.FC<MeekLogoProps> = ({
     xl: 'text-sm tracking-[0.35em]',
   };
 
+  const handleLogoClick = (e: React.MouseEvent) => {
+    if (!onAdminTrigger) return;
+    
+    // Prevent default link navigation if inside an <a> tag
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    const nextCount = clickCount + 1;
+
+    if (nextCount >= 5) {
+      setClickCount(0);
+      setShowHint(false);
+      onAdminTrigger();
+      return;
+    }
+
+    setClickCount(nextCount);
+    if (nextCount >= 3) {
+      setShowHint(true);
+    }
+
+    // Reset after 3 seconds of inactivity
+    timerRef.current = setTimeout(() => {
+      setClickCount(0);
+      setShowHint(false);
+    }, 3000);
+  };
+
   return (
-    <div className={`flex items-center gap-3 select-none ${className}`}>
+    <div 
+      onClick={handleLogoClick}
+      className={`relative inline-flex items-center gap-3 select-none cursor-pointer group ${className}`}
+      title={onAdminTrigger ? 'Meek Studio 3D Art' : undefined}
+    >
       {/* 3D Geometric Gold Sculptural Emblem */}
-      <div className={`relative ${iconSizes[size]} shrink-0 flex items-center justify-center`}>
-        <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 p-[1.5px] shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+      <div className={`relative ${iconSizes[size]} shrink-0 flex items-center justify-center transition-transform active:scale-95 duration-150`}>
+        <div className={`absolute inset-0 rounded-lg bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 p-[1.5px] transition-all ${
+          clickCount > 0 ? 'shadow-[0_0_25px_rgba(212,175,55,0.7)] scale-105' : 'shadow-[0_0_15px_rgba(212,175,55,0.3)]'
+        }`}>
           <div className="w-full h-full bg-neutral-950 rounded-[7px] flex items-center justify-center relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-tr from-amber-950/40 via-transparent to-amber-400/10" />
             
-            {/* Sculpted Monogram M with 3D Facets */}
+            {/* Sculpted Monogram M with 3D Facets matching the real Meek Studio 3D Art brass plaque */}
             <svg viewBox="0 0 40 40" className="w-[72%] h-[72%] text-amber-400 fill-current drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-              {/* Outer faceted geometric M */}
               <polygon points="6,34 6,8 14,8 20,20 26,8 34,8 34,34 27,34 27,17 21,27 19,27 13,17 13,34" fill="url(#goldFacet)" />
-              {/* Inner chisel highlights */}
               <polygon points="6,8 14,8 20,20 19,27 13,17 13,34 6,34" fill="url(#goldLight)" opacity="0.9" />
               <polygon points="20,20 26,8 34,8 34,34 27,34 27,17 21,27" fill="url(#goldDark)" opacity="0.85" />
               <defs>
@@ -75,6 +117,13 @@ export const MeekLogo: React.FC<MeekLogoProps> = ({
           <span className={`font-sans uppercase font-medium text-amber-500/90 ${subSizes[size]}`}>
             3D ART · SCULPTURES
           </span>
+        </div>
+      )}
+
+      {/* Secret click feedback tooltip on 3rd or 4th click */}
+      {showHint && (
+        <div className="absolute -bottom-7 left-0 px-2 py-0.5 rounded bg-neutral-900 border border-amber-500/50 text-[10px] font-mono text-amber-400 tracking-wider whitespace-nowrap shadow-xl z-50 animate-pulse">
+          {5 - clickCount} more {5 - clickCount === 1 ? 'click' : 'clicks'} for Admin...
         </div>
       )}
     </div>

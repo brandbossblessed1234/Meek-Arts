@@ -13,10 +13,13 @@ import { auth, googleProvider, db } from '../firebase';
 interface AuthContextType {
   user: User | null;
   isAdmin: boolean;
+  adminUsername: string | null;
   loading: boolean;
   loginWithGoogle: () => Promise<void>;
   loginWithEmail: (email: string, pass: string) => Promise<void>;
   signUpAdmin: (email: string, pass: string) => Promise<void>;
+  loginWithCredentials: (username: string, pass: string) => boolean;
+  updateLocalAdminPassword: (newPassword: string) => void;
   logout: () => Promise<void>;
   error: string | null;
   clearError: () => void;
@@ -25,10 +28,17 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const BOOTSTRAP_ADMIN_EMAIL = 'valpeterjames@gmail.com';
+const DEFAULT_ADMIN_USERNAMES = ['admin', 'meekstudio', 'valpeterjames@gmail.com'];
+const DEFAULT_ADMIN_PASSWORD = 'meekstudio3dart';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [isAdmin, setIsAdmin] = useState<boolean>(() => {
+    return sessionStorage.getItem('meek_admin_auth') === 'true';
+  });
+  const [adminUsername, setAdminUsername] = useState<string | null>(() => {
+    return sessionStorage.getItem('meek_admin_username') || null;
+  });
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -37,22 +47,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(currentUser);
       if (currentUser) {
         try {
-          // Check if user is the bootstrapped admin
           const emailMatches = currentUser.email?.toLowerCase() === BOOTSTRAP_ADMIN_EMAIL.toLowerCase();
-          
           if (emailMatches) {
             setIsAdmin(true);
+            setAdminUsername(currentUser.email || 'Admin');
+            sessionStorage.setItem('meek_admin_auth', 'true');
+            sessionStorage.setItem('meek_admin_username', currentUser.email || 'Admin');
           } else {
-            // Check Firestore admins collection
             const adminDoc = await getDoc(doc(db, 'admins', currentUser.uid));
-            setIsAdmin(adminDoc.exists());
+            if (adminDoc.exists()) {
+              setIsAdmin(true);
+              setAdminUsername(currentUser.email || 'Admin');
+              sessionStorage.setItem('meek_admin_auth', 'true');
+              sessionStorage.setItem('meek_admin_username', currentUser.email || 'Admin');
+            }
           }
         } catch {
-          // Fallback check on email match
-          setIsAdmin(currentUser.email?.toLowerCase() === BOOTSTRAP_ADMIN_EMAIL.toLowerCase());
+          if (currentUser.email?.toLowerCase() === BOOTSTRAP_ADMIN_EMAIL.toLowerCase()) {
+            setIsAdmin(true);
+            setAdminUsername(currentUser.email);
+            sessionStorage.setItem('meek_admin_auth', 'true');
+          }
         }
       } else {
-        setIsAdmin(false);
+        // Keep session if direct username/password login was authenticated in this session
+        const sessionActive = sessionStorage.getItem('meek_admin_auth') === 'true';
+        if (!sessionActive) {
+          setIsAdmin(false);
+          setAdminUsername(null);
+        }
       }
       setLoading(false);
     });
@@ -61,6 +84,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const clearError = () => setError(null);
+
+  // Direct Username and Password Authentication
+  const loginWithCredentials = (username: string, pass: string): boolean => {
+    clearError();
+    const storedPass = localStorage.getItem('meek_admin_custom_password') || DEFAULT_ADMIN_PASSWORD;
+    const cleanUser = username.trim().toLowerCase();
+
+    const isUserValid = DEFAULT_ADMIN_USERNAMES.some(u => u.toLowerCase() === cleanUser);
+    const isPassValid = pass === storedPass || pass === DEFAULT_ADMIN_PASSWORD;
+
+    if (isUserValid && isPassValid) {
+      setIsAdmin(true);
+      setAdminUsername(cleanUser);
+      sessionStorage.setItem('meek_admin_auth', 'true');
+      sessionStorage.setItem('meek_admin_username', cleanUser);
+      return true;
+    } else {
+      setError('Invalid username or password. Default username: "admin", password: "meekstudio3dart"');
+      return false;
+    }
+  };
+
+  const updateLocalAdminPassword = (newPassword: string) => {
+    if (newPassword && newPassword.length >= 6) {
+      localStorage.setItem('meek_admin_custom_password', newPassword);
+    }
+  };
 
   const loginWithGoogle = async () => {
     try {
@@ -110,9 +160,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = async () => {
     try {
       setError(null);
-      await signOut(auth);
-      setUser(null);
+      sessionStorage.removeItem('meek_admin_auth');
+      sessionStorage.removeItem('meek_admin_username');
       setIsAdmin(false);
+      setAdminUsername(null);
+      if (auth.currentUser) {
+        await signOut(auth);
+      }
+      setUser(null);
     } catch (err: unknown) {
       console.error('Sign Out Error:', err);
     }
@@ -123,10 +178,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       value={{
         user,
         isAdmin,
+        adminUsername,
         loading,
         loginWithGoogle,
         loginWithEmail,
         signUpAdmin,
+        loginWithCredentials,
+        updateLocalAdminPassword,
         logout,
         error,
         clearError,

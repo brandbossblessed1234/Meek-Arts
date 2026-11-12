@@ -36,7 +36,19 @@ interface AdminDashboardProps {
 type TabType = 'overview' | 'portfolio' | 'services' | 'content' | 'inquiries' | 'media';
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) => {
-  const { user, isAdmin, loginWithGoogle, loginWithEmail, signUpAdmin, logout, loading: authLoading, error: authError } = useAuth();
+  const { 
+    user, 
+    isAdmin, 
+    adminUsername, 
+    loginWithGoogle, 
+    loginWithEmail, 
+    signUpAdmin, 
+    loginWithCredentials, 
+    updateLocalAdminPassword, 
+    logout, 
+    loading: authLoading, 
+    error: authError 
+  } = useAuth();
   const { 
     projects, 
     services, 
@@ -58,9 +70,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
 
   const [activeTab, setActiveTab] = useState<TabType>('overview');
 
-  // Login form state
-  const [emailInput, setEmailInput] = useState('');
+  // Username & Password login state
+  const [usernameInput, setUsernameInput] = useState('admin');
   const [passwordInput, setPasswordInput] = useState('');
+  const [newAdminPassword, setNewAdminPassword] = useState('');
+  const [passwordChangeSuccess, setPasswordChangeSuccess] = useState(false);
+
+  // Email form state fallback
+  const [emailInput, setEmailInput] = useState('');
   const [isRegisterMode, setIsRegisterMode] = useState(false);
   const [loginLoading, setLoginLoading] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
@@ -343,8 +360,20 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
               Studio Owner Portal
             </h1>
             <p className="text-xs text-neutral-400">
-              Sign in with your authorized studio account to manage portfolio artwork, services, and inquiries.
+              Sign in with your username and password to manage portfolio artworks, services, content, and inquiries.
             </p>
+          </div>
+
+          {/* Credentials Info Callout */}
+          <div className="p-3.5 rounded-xl bg-neutral-950/80 border border-amber-500/30 text-xs text-neutral-300 space-y-1.5">
+            <div className="flex items-center justify-between text-amber-400 font-semibold uppercase tracking-wider text-[11px]">
+              <span>Official Admin Credentials</span>
+              <span className="text-[10px] text-neutral-500 font-mono">Meek Studio</span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-[11px] font-mono pt-1 text-neutral-300">
+              <div>User: <strong className="text-amber-300">admin</strong></div>
+              <div>Pass: <strong className="text-amber-300">meekstudio3dart</strong></div>
+            </div>
           </div>
 
           {(loginError || authError) && (
@@ -353,77 +382,34 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
             </div>
           )}
 
-          {user && !isAdmin && (
-            <div className="p-4 rounded-xl bg-amber-950/40 border border-amber-500/40 text-amber-200 text-xs text-left space-y-2">
-              <div className="flex items-center gap-2 font-bold">
-                <UserCheck className="w-4 h-4 text-amber-400" />
-                <span>Signed In: {user.email}</span>
-              </div>
-              <p className="text-neutral-300">
-                This account is not yet authorized as an administrator. The primary administrator email is <span className="font-mono text-amber-300">valpeterjames@gmail.com</span>.
-              </p>
-              <button
-                onClick={logout}
-                className="mt-2 text-xs text-amber-400 underline hover:text-amber-300"
-              >
-                Sign out & switch account
-              </button>
-            </div>
-          )}
-
-          {/* Google Sign In (Recommended) */}
-          <button
-            onClick={handleGoogleAuth}
-            disabled={loginLoading}
-            className="w-full py-3.5 px-4 rounded-xl bg-neutral-950 border border-neutral-700 hover:border-amber-400 text-neutral-200 font-medium text-xs uppercase tracking-wider flex items-center justify-center gap-3 transition-colors shadow"
+          {/* Primary Form: Username & Password */}
+          <form 
+            onSubmit={(e) => {
+              e.preventDefault();
+              setLoginError(null);
+              const ok = loginWithCredentials(usernameInput, passwordInput);
+              if (!ok) {
+                setLoginError('Invalid username or password. Please use: admin / meekstudio3dart');
+              }
+            }} 
+            className="space-y-4 text-left"
           >
-            <svg className="w-4 h-4" viewBox="0 0 24 24">
-              <path
-                fill="#4285F4"
-                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-              />
-              <path
-                fill="#34A853"
-                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-              />
-              <path
-                fill="#FBBC05"
-                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
-              />
-              <path
-                fill="#EA4335"
-                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-              />
-            </svg>
-            <span>Sign in with Google</span>
-          </button>
-
-          <div className="relative flex items-center justify-center">
-            <span className="h-[1px] w-full bg-neutral-800" />
-            <span className="px-3 bg-neutral-900 text-[10px] uppercase tracking-widest text-neutral-500">
-              Or email login
-            </span>
-            <span className="h-[1px] w-full bg-neutral-800" />
-          </div>
-
-          {/* Email / Password fallback */}
-          <form onSubmit={handleEmailAuth} className="space-y-4 text-left">
             <div>
-              <label className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-400 mb-1">
-                Admin Email
+              <label className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-300 mb-1">
+                Username
               </label>
               <input
-                type="email"
+                type="text"
                 required
-                value={emailInput}
-                onChange={(e) => setEmailInput(e.target.value)}
-                placeholder="valpeterjames@gmail.com"
+                value={usernameInput}
+                onChange={(e) => setUsernameInput(e.target.value)}
+                placeholder="admin"
                 className="w-full px-3.5 py-2.5 rounded-lg bg-neutral-950 border border-neutral-800 text-neutral-100 text-sm focus:outline-none focus:border-amber-400 font-mono"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-400 mb-1">
+              <label className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-300 mb-1">
                 Password
               </label>
               <input
@@ -431,32 +417,61 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
                 required
                 value={passwordInput}
                 onChange={(e) => setPasswordInput(e.target.value)}
-                placeholder="••••••••"
+                placeholder="••••••••••••"
                 className="w-full px-3.5 py-2.5 rounded-lg bg-neutral-950 border border-neutral-800 text-neutral-100 text-sm focus:outline-none focus:border-amber-400"
               />
             </div>
 
-            <button
-              type="submit"
-              disabled={loginLoading}
-              className="w-full py-3 text-xs font-bold uppercase tracking-wider text-neutral-950 bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 rounded-lg hover:from-amber-200 hover:to-amber-400 transition-all flex items-center justify-center gap-2"
-            >
-              {loginLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-              <span>{isRegisterMode ? 'Register Admin Account' : 'Sign In as Owner'}</span>
-            </button>
+            <div className="space-y-2 pt-1">
+              <button
+                type="submit"
+                className="w-full py-3 text-xs font-bold uppercase tracking-wider text-neutral-950 bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 rounded-lg hover:from-amber-200 hover:to-amber-400 transition-all flex items-center justify-center gap-2 shadow-md"
+              >
+                <span>Sign In as Admin</span>
+              </button>
 
-            <div className="text-center pt-2">
               <button
                 type="button"
-                onClick={() => setIsRegisterMode(!isRegisterMode)}
-                className="text-[11px] text-neutral-400 hover:text-amber-400"
+                onClick={() => {
+                  setUsernameInput('admin');
+                  setPasswordInput('meekstudio3dart');
+                  loginWithCredentials('admin', 'meekstudio3dart');
+                }}
+                className="w-full py-2.5 text-xs font-semibold uppercase tracking-wider text-amber-300 bg-neutral-950 hover:bg-neutral-850 border border-amber-500/40 rounded-lg transition-colors flex items-center justify-center gap-2"
               >
-                {isRegisterMode 
-                  ? 'Already have an admin account? Sign In' 
-                  : 'First time setup? Register Initial Admin Account'}
+                <span>One-Click Quick Login (admin)</span>
               </button>
             </div>
           </form>
+
+          {/* Alternative Google Sign In */}
+          <div className="pt-2 border-t border-neutral-800/80">
+            <button
+              onClick={handleGoogleAuth}
+              disabled={loginLoading}
+              className="w-full py-2.5 px-4 rounded-lg bg-neutral-950 border border-neutral-800 hover:border-neutral-700 text-neutral-400 hover:text-neutral-200 font-medium text-xs uppercase tracking-wider flex items-center justify-center gap-2.5 transition-colors"
+            >
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24">
+                <path
+                  fill="#4285F4"
+                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+                />
+                <path
+                  fill="#EA4335"
+                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+                />
+              </svg>
+              <span>Or sign in with Google</span>
+            </button>
+          </div>
 
         </div>
 
@@ -487,7 +502,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
               </span>
             </h1>
             <span className="text-[10px] text-neutral-400 font-mono hidden sm:inline">
-              Logged in: {user.email}
+              Logged in: {user?.email || adminUsername || 'admin'}
             </span>
           </div>
         </div>
@@ -1452,6 +1467,50 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
                 </div>
 
               </form>
+
+              {/* Admin Password Management Card */}
+              <div className="p-6 sm:p-8 rounded-2xl bg-neutral-900 border border-neutral-800 space-y-4">
+                <div className="flex items-center gap-2 text-xs uppercase font-bold tracking-wider text-amber-400">
+                  <ShieldCheck className="w-4 h-4 text-amber-500" />
+                  <span>Admin Credentials & Security</span>
+                </div>
+                <p className="text-xs text-neutral-400">
+                  Default Username: <strong className="text-amber-300 font-mono">admin</strong>. You can update your custom administrator password below.
+                </p>
+
+                {passwordChangeSuccess && (
+                  <div className="p-3.5 rounded-lg bg-emerald-950/60 border border-emerald-500/40 text-emerald-200 text-xs">
+                    Admin password successfully updated!
+                  </div>
+                )}
+
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                  <input
+                    type="password"
+                    value={newAdminPassword}
+                    onChange={(e) => setNewAdminPassword(e.target.value)}
+                    placeholder="Enter new admin password (min 6 chars)..."
+                    className="flex-1 px-4 py-2.5 rounded-lg bg-neutral-950 border border-neutral-800 text-neutral-100 text-sm focus:outline-none focus:border-amber-400 font-mono"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (newAdminPassword.length >= 6) {
+                        updateLocalAdminPassword(newAdminPassword);
+                        setPasswordChangeSuccess(true);
+                        setNewAdminPassword('');
+                        setTimeout(() => setPasswordChangeSuccess(false), 3000);
+                      } else {
+                        alert('Password must be at least 6 characters');
+                      }
+                    }}
+                    className="px-5 py-2.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs font-bold uppercase tracking-wider transition-colors shrink-0"
+                  >
+                    Update Password
+                  </button>
+                </div>
+              </div>
+
             </div>
           )}
 

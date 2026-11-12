@@ -29,16 +29,16 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   facebookUrl: 'https://www.facebook.com/profile.php?id=100091903210785',
 };
 
+// 10 Real Finished 3D Artworks from Meek Studio
 export const INITIAL_PROJECTS: Project[] = [
   {
-    id: 'mythos-dragon-sculpture',
-    title: 'Mythos Wyrm – Metallic Gold & Charcoal Edition',
-    description: 'High-fidelity custom 3D sculpted mythological dragon centerpiece featuring gilded armor filigree, hyper-textured serpentine anatomy, and dramatic basalt gallery plinth presentation.',
-    category: 'Display Sculptures',
-    coverImage: '/src/assets/images/meek_hero_sculpture_1794441974326.jpg',
+    id: 'port-of-iloilo-anniversary-statues',
+    title: 'Port of Iloilo 171st Founding Anniversary – Dinagyang Warrior Statues',
+    description: "Official commemorative fine art bronze warrior sculptures commissioned for the Bureau of Customs Port of Iloilo's 171st Founding Anniversary. Features hyper-intricate feathered headdresses, authentic warrior shields, tribal beadwork, and custom engraved pedestal bases.",
+    category: 'Collectible Art',
+    coverImage: '/assets/aistudio/825278790_1025978370475594_8031018495389838943_n_238b4cc5.jpg',
     images: [
-      '/src/assets/images/meek_hero_sculpture_1794441974326.jpg',
-      '/src/assets/images/meek_display_sculpture_1794441975006.jpg'
+      '/assets/aistudio/825278790_1025978370475594_8031018495389838943_n_238b4cc5.jpg'
     ],
     completionDate: '2026',
     isFeatured: true,
@@ -47,13 +47,13 @@ export const INITIAL_PROJECTS: Project[] = [
     createdAt: new Date().toISOString(),
   },
   {
-    id: 'aurelian-vanguard-figure',
-    title: 'Aurelian Vanguard – Dual Blades Collectible',
-    description: 'Handcrafted collectible character figurine sculpted with dynamic cape flow, intricately gilded pauldrons, dual runic broadswords, and weathered stone display base.',
-    category: '3D Character Sculptures',
-    coverImage: '/src/assets/images/meek_character_figure_1794441974759.jpg',
+    id: 'goku-ramen-chef-lifesize',
+    title: 'Life-Size Goku Ramen Chef – Restaurant Centerpiece',
+    description: 'Life-size custom 3D sculpture of Son Goku in his iconic orange gi serving a freshly sculpted bowl of Japanese ramen. Built with reinforced internal armature, vibrant anime paintwork, custom restaurant logo chest crest, and official brass Meek Studio 3D Art plaque on the base.',
+    category: 'Display Sculptures',
+    coverImage: '/assets/aistudio/772824235_983691351370963_7766864389843390485_n_1d1aa322.jpg',
     images: [
-      '/src/assets/images/meek_character_figure_1794441974759.jpg'
+      '/assets/aistudio/772824235_983691351370963_7766864389843390485_n_1d1aa322.jpg'
     ],
     completionDate: '2026',
     isFeatured: true,
@@ -62,13 +62,14 @@ export const INITIAL_PROJECTS: Project[] = [
     createdAt: new Date().toISOString(),
   },
   {
-    id: 'aurum-cyberdraco',
-    title: 'Aurum Mechadraconis Showcase',
-    description: 'Complex mechanical dragon display sculpture blending geometric cybernetic articulation with organic biomechanical wings and radiant gold leaf plates.',
-    category: 'Collectible Art',
-    coverImage: '/src/assets/images/meek_display_sculpture_1794441975006.jpg',
+    id: 'hulk-fighter-squad-monument',
+    title: 'Colossal Incredible Hulk & Champion Fighter Ensemble',
+    description: 'Monumental display sculpture featuring a massive, hyper-muscular Incredible Hulk flanked by Super Saiyan Blue Goku, Baki Hanma, and Akuma. Demonstrates multi-figure scale mastering, anatomical muscle sculpting, cloth tearing dynamics, and official studio branding standee.',
+    category: '3D Character Sculptures',
+    coverImage: '/assets/aistudio/729451843_942711932135572_5301652161774653015_n__1__95a57a76.jpg',
     images: [
-      '/src/assets/images/meek_display_sculpture_1794441975006.jpg'
+      '/assets/aistudio/729451843_942711932135572_5301652161774653015_n__1__95a57a76.jpg',
+      '/assets/aistudio/774712271_987100614363370_1298902464828953343_n_0eda4444.jpg'
     ],
     completionDate: '2026',
     isFeatured: true,
@@ -77,33 +78,108 @@ export const INITIAL_PROJECTS: Project[] = [
     createdAt: new Date().toISOString(),
   },
   {
-    id: 'scholar-bust-sculpture',
-    title: 'The Imperial Scholar – Portrait Bust',
-    description: 'Custom sculpted realistic portrait bust in aged bronze with 24k gold leaf brocade robes, capturing intense character expression and lifelike skin textures.',
-    category: 'Custom Figures',
-    coverImage: '/src/assets/images/meek_custom_figure_bust_1794441976147.jpg',
+    id: 'charizard-lifesize-workshop',
+    title: 'Life-Scale Charizard Dragon Sculpture',
+    description: 'Gigantic full-scale Charizard sculpted in the Meek Studio Iloilo workshop. Features expansive aerodynamic wings, open roaring jaws, high-gloss lacquer finish, and reinforced structural stability for commercial exhibition and theme installations.',
+    category: 'Display Sculptures',
+    coverImage: '/assets/aistudio/773167137_984629687943796_2392283727810284078_n_8d92f796.jpg',
     images: [
-      '/src/assets/images/meek_custom_figure_bust_1794441976147.jpg'
+      '/assets/aistudio/773167137_984629687943796_2392283727810284078_n_8d92f796.jpg'
     ],
     completionDate: '2026',
-    isFeatured: false,
+    isFeatured: true,
     isPublished: true,
     order: 4,
     createdAt: new Date().toISOString(),
   },
   {
-    id: 'studio-atelier-craft',
-    title: 'Studio Detailing & Clay Detailing Studies',
-    description: 'Behind-the-scenes precision detailing, manual tool calibration, gold pigment application, and multi-stage 3D model finishing in our Iloilo City workshop.',
-    category: 'Other Custom Projects',
-    coverImage: '/src/assets/images/meek_studio_workshop_1794441975687.jpg',
+    id: 'islandvault-teemo-diorama',
+    title: 'IslandVault.ph – Teemo Scout & Toxic Mushroom Diorama',
+    description: 'Full commercial installation of League of Legends Teemo with brass telescope, avian scout companion, and vibrant spotted toxic mushrooms, permanently installed in IslandVault.ph trading card and collectible cafe in Iloilo.',
+    category: 'Custom Figures',
+    coverImage: '/assets/aistudio/856080635_1048606644879433_5252238733541754884_n_f530eec4.jpg',
     images: [
-      '/src/assets/images/meek_studio_workshop_1794441975687.jpg'
+      '/assets/aistudio/856080635_1048606644879433_5252238733541754884_n_f530eec4.jpg'
+    ],
+    completionDate: '2026',
+    isFeatured: true,
+    isPublished: true,
+    order: 5,
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'toothless-night-fury-sculpture',
+    title: 'Toothless Night Fury – Matte Black Collectible Figurine',
+    description: 'Intricately detailed custom 3D sculpture of baby Toothless featuring velvety matte black finish, individual scale textures, golden claws, articulated wings, and hyper-realistic glass-like iridescent emerald eyes.',
+    category: 'Collectible Art',
+    coverImage: '/assets/aistudio/758854701_973436335729798_6491782083984560811_n_7f1006c7.jpg',
+    images: [
+      '/assets/aistudio/758854701_973436335729798_6491782083984560811_n_7f1006c7.jpg'
     ],
     completionDate: '2026',
     isFeatured: false,
     isPublished: true,
-    order: 5,
+    order: 6,
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'barista-goku-coffee-sculpture',
+    title: 'Barista Goku – Custom Cafe Mascot Sculpture',
+    description: 'Unique collectible sculpture depicting Goku as an artisanal barista wearing a leather apron with brass clasps, proudly offering a freshly poured cup of coffee topped with dynamic swirling smoke sculpture.',
+    category: 'Custom Figures',
+    coverImage: '/assets/aistudio/829555833_1029085393498225_1441179482039666599_n_669ad425.jpg',
+    images: [
+      '/assets/aistudio/829555833_1029085393498225_1441179482039666599_n_669ad425.jpg'
+    ],
+    completionDate: '2026',
+    isFeatured: false,
+    isPublished: true,
+    order: 7,
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'general-m-bison-crimson',
+    title: 'General M. Bison – High-Fidelity Fighting Statue',
+    description: 'Hyper-muscular Street Fighter villain statue in dynamic clutched-fist combat stance. Features deep crimson shading, flared military coat dynamics, metallic plated armor pauldrons, and menacing expression.',
+    category: '3D Character Sculptures',
+    coverImage: '/assets/aistudio/808414872_1013416491731782_6568560019846190914_n_22952165.jpg',
+    images: [
+      '/assets/aistudio/808414872_1013416491731782_6568560019846190914_n_22952165.jpg'
+    ],
+    completionDate: '2026',
+    isFeatured: false,
+    isPublished: true,
+    order: 8,
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'chow-chow-dog-sculpture',
+    title: 'Handcrafted Chow Chow Canine Sculpture',
+    description: 'Bespoke pet portrait sculpture of a fluffy Chow Chow dog. Meticulously modeled fur layering, folds, expressive dark eyes, and warm chestnut airbrushed gradient finish on studio pedestal.',
+    category: 'Personalized 3D Art',
+    coverImage: '/assets/aistudio/795641522_1021115770961854_6727061878692991185_n_2315f772.jpg',
+    images: [
+      '/assets/aistudio/795641522_1021115770961854_6727061878692991185_n_2315f772.jpg'
+    ],
+    completionDate: '2026',
+    isFeatured: false,
+    isPublished: true,
+    order: 9,
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'incredible-hulk-solo-plinth',
+    title: 'The Incredible Hulk – Solitary Gallery Edition',
+    description: 'Standing full-figure study of the green behemoth on round exhibition plinth, showcasing anatomical vascularity, shredded purple denim texture, and gladiatorial hand-wrapped foot wraps.',
+    category: 'Display Sculptures',
+    coverImage: '/assets/aistudio/774712271_987100614363370_1298902464828953343_n_0eda4444.jpg',
+    images: [
+      '/assets/aistudio/774712271_987100614363370_1298902464828953343_n_0eda4444.jpg'
+    ],
+    completionDate: '2026',
+    isFeatured: false,
+    isPublished: true,
+    order: 10,
     createdAt: new Date().toISOString(),
   }
 ];
@@ -112,36 +188,36 @@ export const INITIAL_SERVICES: Service[] = [
   {
     id: 'custom-3d-sculptures',
     name: 'Custom 3D Sculptures',
-    description: 'Large-scale bespoke sculptures, statement art pieces, and display centerpieces modeled and crafted to your exact spatial and aesthetic vision.',
-    imageUrl: '/src/assets/images/meek_hero_sculpture_1794441974326.jpg',
+    description: 'Life-size commercial display centerpieces, restaurant mascots, and monumental installations engineered with reinforced internal steel armatures.',
+    imageUrl: '/assets/aistudio/772824235_983691351370963_7766864389843390485_n_1d1aa322.jpg',
     order: 1,
   },
   {
     id: 'character-figures',
     name: 'Character Figures',
-    description: 'High-detail anime, comic, game, and fantasy character figures with custom armor, dynamic action poses, and museum display plinths.',
-    imageUrl: '/src/assets/images/meek_character_figure_1794441974759.jpg',
+    description: 'High-detail anime, gaming, comic, and pop culture figures featuring complex muscle anatomy, flowing apparel, and vibrant studio-grade airbrushing.',
+    imageUrl: '/assets/aistudio/729451843_942711932135572_5301652161774653015_n__1__95a57a76.jpg',
     order: 2,
   },
   {
     id: 'collectible-figures',
     name: 'Collectible Figures',
-    description: 'Limited run collectible figures, fine art prototypes, and miniature statues with metallic, bronze, or custom hand-painted finishes.',
-    imageUrl: '/src/assets/images/meek_display_sculpture_1794441975006.jpg',
+    description: 'Limited edition art pieces, commemorative historical warrior trophies, and museum-grade bronze statues crafted for organizations and private collectors.',
+    imageUrl: '/assets/aistudio/825278790_1025978370475594_8031018495389838943_n_238b4cc5.jpg',
     order: 3,
   },
   {
     id: 'personalized-3d-art',
     name: 'Personalized 3D Art',
-    description: 'Custom portrait busts, memorial sculptures, family crests, and unique personalized gifts transformed from your reference photographs.',
-    imageUrl: '/src/assets/images/meek_custom_figure_bust_1794441976147.jpg',
+    description: 'Custom pet memorials, lifelike animal sculptures, personal portrait busts, and unique gifts sculpted directly from your photographs.',
+    imageUrl: '/assets/aistudio/795641522_1021115770961854_6727061878692991185_n_2315f772.jpg',
     order: 4,
   },
   {
     id: 'custom-art-projects',
-    name: 'Custom Art Projects',
-    description: 'Specialized architectural accents, gaming trophies, specialized props, and experimental 3D designs engineered with premium materials.',
-    imageUrl: '/src/assets/images/meek_studio_workshop_1794441975687.jpg',
+    name: 'Commercial Displays & Props',
+    description: 'Large theme park dragons, retail store mascots, cafe dioramas, and specialized props customized for brands and entertainment venues.',
+    imageUrl: '/assets/aistudio/773167137_984629687943796_2392283727810284078_n_8d92f796.jpg',
     order: 5,
   }
 ];
@@ -175,41 +251,73 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [services, setServices] = useState<Service[]>(INITIAL_SERVICES);
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [settings, setSettings] = useState<SiteSettings>(DEFAULT_SETTINGS);
+  
+  // Media items populated with the real 10 Meek Studio photographs
   const [mediaItems, setMediaItems] = useState<MediaItem[]>([
     {
       id: 'media-1',
-      name: 'meek_hero_sculpture.jpg',
-      url: '/src/assets/images/meek_hero_sculpture_1794441974326.jpg',
+      name: 'Port_of_Iloilo_Warrior_Anniversary_Statues.jpg',
+      url: '/assets/aistudio/825278790_1025978370475594_8031018495389838943_n_238b4cc5.jpg',
       uploadedAt: new Date().toISOString(),
     },
     {
       id: 'media-2',
-      name: 'meek_character_figure.jpg',
-      url: '/src/assets/images/meek_character_figure_1794441974759.jpg',
+      name: 'Goku_LifeSize_Ramen_Chef_Centerpiece.jpg',
+      url: '/assets/aistudio/772824235_983691351370963_7766864389843390485_n_1d1aa322.jpg',
       uploadedAt: new Date().toISOString(),
     },
     {
       id: 'media-3',
-      name: 'meek_display_sculpture.jpg',
-      url: '/src/assets/images/meek_display_sculpture_1794441975006.jpg',
+      name: 'Colossal_Hulk_Martial_Artists_Ensemble.jpg',
+      url: '/assets/aistudio/729451843_942711932135572_5301652161774653015_n__1__95a57a76.jpg',
       uploadedAt: new Date().toISOString(),
     },
     {
       id: 'media-4',
-      name: 'meek_custom_figure_bust.jpg',
-      url: '/src/assets/images/meek_custom_figure_bust_1794441976147.jpg',
+      name: 'Charizard_LifeScale_Dragon_Sculpture.jpg',
+      url: '/assets/aistudio/773167137_984629687943796_2392283727810284078_n_8d92f796.jpg',
       uploadedAt: new Date().toISOString(),
     },
     {
       id: 'media-5',
-      name: 'meek_studio_workshop.jpg',
-      url: '/src/assets/images/meek_studio_workshop_1794441975687.jpg',
+      name: 'IslandVault_Teemo_Scout_Mushroom_Diorama.jpg',
+      url: '/assets/aistudio/856080635_1048606644879433_5252238733541754884_n_f530eec4.jpg',
+      uploadedAt: new Date().toISOString(),
+    },
+    {
+      id: 'media-6',
+      name: 'Toothless_Night_Fury_Matte_Black_Sculpture.jpg',
+      url: '/assets/aistudio/758854701_973436335729798_6491782083984560811_n_7f1006c7.jpg',
+      uploadedAt: new Date().toISOString(),
+    },
+    {
+      id: 'media-7',
+      name: 'Barista_Goku_Coffee_Cup_Sculpture.jpg',
+      url: '/assets/aistudio/829555833_1029085393498225_1441179482039666599_n_669ad425.jpg',
+      uploadedAt: new Date().toISOString(),
+    },
+    {
+      id: 'media-8',
+      name: 'General_M_Bison_Street_Fighter_Statue.jpg',
+      url: '/assets/aistudio/808414872_1013416491731782_6568560019846190914_n_22952165.jpg',
+      uploadedAt: new Date().toISOString(),
+    },
+    {
+      id: 'media-9',
+      name: 'Chow_Chow_Dog_Custom_Pet_Sculpture.jpg',
+      url: '/assets/aistudio/795641522_1021115770961854_6727061878692991185_n_2315f772.jpg',
+      uploadedAt: new Date().toISOString(),
+    },
+    {
+      id: 'media-10',
+      name: 'Incredible_Hulk_Solo_Pedestal_Exhibition.jpg',
+      url: '/assets/aistudio/774712271_987100614363370_1298902464828953343_n_0eda4444.jpg',
       uploadedAt: new Date().toISOString(),
     }
   ]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Sync Settings
+  // Sync Settings from Firestore
   useEffect(() => {
     const unsub = onSnapshot(
       doc(db, 'settings', 'site_config'),
@@ -225,7 +333,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => unsub();
   }, []);
 
-  // Sync Services
+  // Sync Services from Firestore
   useEffect(() => {
     const servicesRef = collection(db, 'services');
     const unsub = onSnapshot(
@@ -247,7 +355,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => unsub();
   }, []);
 
-  // Sync Projects
+  // Sync Projects from Firestore
   useEffect(() => {
     const projectsRef = collection(db, 'projects');
     const unsub = onSnapshot(
@@ -343,7 +451,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
 
-  // Convert blob to DataURL fallback if cloud storage is restricted
   const blobToDataUrl = (blob: Blob): Promise<string> => {
     return new Promise((resolve) => {
       const reader = new FileReader();
@@ -352,7 +459,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
 
-  // Upload image to Firebase Storage or seamless base64 fallback
   const uploadImage = async (file: File): Promise<string> => {
     try {
       const compressedBlob = await compressImage(file);
@@ -378,7 +484,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Upload to media items
   const uploadMediaItem = async (file: File): Promise<MediaItem> => {
     const url = await uploadImage(file);
     const newItem: MediaItem = {
@@ -396,7 +501,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setMediaItems(prev => prev.filter(m => m.id !== id));
   };
 
-  // Save Project (Add or Update)
   const saveProject = async (projectData: Partial<Project> & { id?: string }): Promise<string> => {
     const id = projectData.id || `proj-${Date.now()}`;
     const path = `projects/${id}`;
@@ -407,7 +511,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       title: projectData.title || 'Untitled Artwork',
       description: projectData.description || '',
       category: projectData.category || '3D Character Sculptures',
-      coverImage: projectData.coverImage || '/src/assets/images/meek_hero_sculpture_1794441974326.jpg',
+      coverImage: projectData.coverImage || '/assets/aistudio/825278790_1025978370475594_8031018495389838943_n_238b4cc5.jpg',
       images: projectData.images && projectData.images.length > 0 ? projectData.images : [projectData.coverImage || ''],
       completionDate: projectData.completionDate || new Date().getFullYear().toString(),
       isFeatured: !!projectData.isFeatured,
@@ -419,7 +523,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     try {
       await setDoc(doc(db, 'projects', id), dataToSave);
-      // Optimistic local update
       setProjects(prev => {
         const index = prev.findIndex(p => p.id === id);
         if (index >= 0) {
@@ -435,7 +538,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Delete Project
   const deleteProject = async (id: string): Promise<void> => {
     const path = `projects/${id}`;
     try {
@@ -446,7 +548,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Save Service
   const saveService = async (serviceData: Partial<Service> & { id?: string }): Promise<string> => {
     const id = serviceData.id || `srv-${Date.now()}`;
     const path = `services/${id}`;
@@ -480,7 +581,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Delete Service
   const deleteService = async (id: string): Promise<void> => {
     const path = `services/${id}`;
     try {
@@ -491,7 +591,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Update Settings
   const updateSettings = async (newSettings: Partial<SiteSettings>): Promise<void> => {
     const path = 'settings/site_config';
     const merged = { ...settings, ...newSettings, updatedAt: new Date().toISOString() };
@@ -503,7 +602,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Submit Customer Inquiry
   const submitInquiry = async (inquiryData: Omit<Inquiry, 'id' | 'createdAt' | 'status'>): Promise<string> => {
     const id = `inq-${Date.now()}`;
     const path = `inquiries/${id}`;
@@ -522,7 +620,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Update Inquiry Status (Admin only)
   const updateInquiryStatus = async (id: string, status: Inquiry['status']): Promise<void> => {
     const path = `inquiries/${id}`;
     try {
@@ -533,7 +630,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Delete Inquiry (Admin only)
   const deleteInquiry = async (id: string): Promise<void> => {
     const path = `inquiries/${id}`;
     try {
@@ -544,21 +640,17 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Admin function to populate initial defaults into Firestore
   const initializeDefaultsToFirestore = useCallback(async () => {
     try {
-      // 1. Settings
       await setDoc(doc(db, 'settings', 'site_config'), {
         ...DEFAULT_SETTINGS,
         updatedAt: new Date().toISOString(),
       }, { merge: true });
 
-      // 2. Services
       for (const service of INITIAL_SERVICES) {
         await setDoc(doc(db, 'services', service.id), service, { merge: true });
       }
 
-      // 3. Projects
       for (const project of INITIAL_PROJECTS) {
         await setDoc(doc(db, 'projects', project.id), project, { merge: true });
       }
@@ -567,7 +659,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  // Check if initial items need seeding when an admin is active
   useEffect(() => {
     if (isAdmin) {
       const checkAndSeed = async () => {

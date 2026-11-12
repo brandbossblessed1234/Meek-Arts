@@ -5,14 +5,15 @@ import { useData } from '../context/DataContext';
 
 interface HeroProps {
   onOpenOrderModal: () => void;
+  onNavigateToAdmin?: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onOpenOrderModal }) => {
+export const Hero: React.FC<HeroProps> = ({ onOpenOrderModal, onNavigateToAdmin }) => {
   const { settings, projects } = useData();
   
-  // Use featured project or hero image
+  // Use featured project or real studio masterpiece
   const featured = projects.find(p => p.isFeatured && p.isPublished) || projects[0];
-  const heroImage = featured?.coverImage || '/src/assets/images/meek_hero_sculpture_1794441974326.jpg';
+  const heroImage = featured?.coverImage || '/assets/aistudio/825278790_1025978370475594_8031018495389838943_n_238b4cc5.jpg';
 
   return (
     <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden bg-neutral-950 py-16 lg:py-24">
@@ -29,9 +30,9 @@ export const Hero: React.FC<HeroProps> = ({ onOpenOrderModal }) => {
           {/* Left Column: Studio Brand, Headlines, Verse, and Actions */}
           <div className="lg:col-span-7 flex flex-col text-left space-y-8">
             
-            {/* Studio Badge / Wordmark */}
+            {/* Studio Badge / Wordmark with 5-click admin backdoor */}
             <div>
-              <MeekLogo size="lg" />
+              <MeekLogo size="lg" onAdminTrigger={onNavigateToAdmin} />
             </div>
 
             {/* Headline */}

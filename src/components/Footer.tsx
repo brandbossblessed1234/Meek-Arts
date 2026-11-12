@@ -19,7 +19,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateToAdmin }) => {
           
           {/* Brand & Studio Description */}
           <div className="md:col-span-6 space-y-4">
-            <MeekLogo size="md" />
+            <MeekLogo size="md" onAdminTrigger={onNavigateToAdmin} />
             <p className="text-xs sm:text-sm text-neutral-400 max-w-md font-light leading-relaxed">
               Bespoke 3D sculptures, customized collectible figures, and extraordinary 3D art engineered and crafted with precision in Iloilo City, Philippines.
             </p>
@@ -94,19 +94,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateToAdmin }) => {
 
         </div>
 
-        {/* Bottom bar with Copyright and Admin Link */}
+        {/* Bottom bar with Copyright */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
           <p>© {currentYear} {settings.businessName || 'MEEK STUDIO 3D ART'}. All rights reserved.</p>
-          
-          <div className="flex items-center gap-4">
-            <button
-              onClick={onNavigateToAdmin}
-              className="inline-flex items-center gap-1.5 text-neutral-400 hover:text-amber-400 transition-colors text-xs"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-amber-500" />
-              <span>Owner Admin Portal</span>
-            </button>
-          </div>
+          <p className="text-[11px] text-neutral-600">
+            Handcrafted with excellence in Iloilo City, Philippines
+          </p>
         </div>
 
       </div>
