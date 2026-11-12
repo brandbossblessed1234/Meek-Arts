@@ -1,0 +1,6 @@
+{
+  "name": "Meek Studio 3D Art",
+  "description": "Official website and admin portfolio management for Meek Studio 3D Art, custom 3D sculpture and collectible art studio in Iloilo City, Philippines.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

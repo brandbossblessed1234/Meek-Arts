@@ -1,0 +1,77 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --font-heading: 'Cinzel', serif;
+    --font-sans: 'Plus Jakarta Sans', sans-serif;
+    --font-serif: 'Playfair Display', serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+    background-color: #08080a;
+    color: #e5e5e7;
+  }
+
+  body {
+    background-color: #08080a;
+    color: #f3f3f5;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .font-heading {
+    font-family: var(--font-heading);
+    letter-spacing: 0.05em;
+  }
+}
+
+/* Custom Gold & Metallic Accents */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #fce09b 0%, #d4af37 50%, #aa7c28 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-gradient-bg {
+  background: linear-gradient(135deg, #e5c158 0%, #d4af37 60%, #b8860b 100%);
+}
+
+.gold-gradient-subtle {
+  background: linear-gradient(180deg, rgba(212, 175, 55, 0.12) 0%, rgba(212, 175, 55, 0.02) 100%);
+}
+
+.gold-border-glow {
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  box-shadow: 0 0 25px -5px rgba(212, 175, 55, 0.12);
+}
+
+.gold-border-glow:hover {
+  border-color: rgba(212, 175, 55, 0.45);
+  box-shadow: 0 0 35px -5px rgba(212, 175, 55, 0.2);
+}
+
+.dark-textured-surface {
+  background-color: #0e0e12;
+  background-image: radial-gradient(rgba(212, 175, 55, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #0d0d11;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #2a2a35;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #d4af37;
+}

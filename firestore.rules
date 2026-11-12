@@ -1,0 +1,134 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net: Default Deny All
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Hardened Global Helpers
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        (request.auth.token.email == 'valpeterjames@gmail.com' && request.auth.token.email_verified == true) ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    // Validation Blueprint for Projects
+    function isValidProject(data) {
+      return data.title is string && data.title.size() > 0 && data.title.size() <= 150 &&
+             data.description is string && data.description.size() <= 4000 &&
+             data.category is string && data.category.size() <= 60 &&
+             data.coverImage is string && data.coverImage.size() <= 2048 &&
+             data.isPublished is bool &&
+             (!('images' in data) || (data.images is list && data.images.size() <= 30)) &&
+             (!('completionDate' in data) || (data.completionDate is string && data.completionDate.size() <= 30)) &&
+             (!('isFeatured' in data) || data.isFeatured is bool) &&
+             (!('order' in data) || data.order is number) &&
+             (!('createdAt' in data) || (data.createdAt is string && data.createdAt.size() <= 50)) &&
+             (!('updatedAt' in data) || (data.updatedAt is string && data.updatedAt.size() <= 50));
+    }
+
+    // Validation Blueprint for Services
+    function isValidService(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() <= 150 &&
+             data.description is string && data.description.size() <= 2000 &&
+             (!('imageUrl' in data) || (data.imageUrl is string && data.imageUrl.size() <= 2048)) &&
+             (!('startingPrice' in data) || (data.startingPrice is string && data.startingPrice.size() <= 50)) &&
+             (!('order' in data) || data.order is number) &&
+             (!('createdAt' in data) || (data.createdAt is string && data.createdAt.size() <= 50)) &&
+             (!('updatedAt' in data) || (data.updatedAt is string && data.updatedAt.size() <= 50));
+    }
+
+    // Validation Blueprint for Customer Inquiries
+    function isValidInquiry(data) {
+      return data.customerName is string && data.customerName.size() > 0 && data.customerName.size() <= 100 &&
+             data.contactNumber is string && data.contactNumber.size() > 0 && data.contactNumber.size() <= 30 &&
+             data.artworkType is string && data.artworkType.size() > 0 && data.artworkType.size() <= 60 &&
+             data.description is string && data.description.size() > 0 && data.description.size() <= 4000 &&
+             data.status in ['New', 'Contacted', 'Completed'] &&
+             (!('referenceImage' in data) || (data.referenceImage is string && data.referenceImage.size() <= 2048)) &&
+             data.createdAt is string && data.createdAt.size() <= 50;
+    }
+
+    // Validation Blueprint for Website Settings
+    function isValidSetting(data) {
+      return (!('businessName' in data) || (data.businessName is string && data.businessName.size() <= 100)) &&
+             (!('headline' in data) || (data.headline is string && data.headline.size() <= 200)) &&
+             (!('supportingText' in data) || (data.supportingText is string && data.supportingText.size() <= 500)) &&
+             (!('bibleVerse' in data) || (data.bibleVerse is string && data.bibleVerse.size() <= 300)) &&
+             (!('bibleReference' in data) || (data.bibleReference is string && data.bibleReference.size() <= 100)) &&
+             (!('aboutTitle' in data) || (data.aboutTitle is string && data.aboutTitle.size() <= 200)) &&
+             (!('aboutText' in data) || (data.aboutText is string && data.aboutText.size() <= 5000)) &&
+             (!('contactNumber' in data) || (data.contactNumber is string && data.contactNumber.size() <= 50)) &&
+             (!('location' in data) || (data.location is string && data.location.size() <= 200)) &&
+             (!('facebookUrl' in data) || (data.facebookUrl is string && data.facebookUrl.size() <= 500)) &&
+             (!('updatedAt' in data) || (data.updatedAt is string && data.updatedAt.size() <= 50));
+    }
+
+    // Projects Collection
+    match /projects/{projectId} {
+      // Public visitors can get/list published projects. Admins can read all projects.
+      allow get: if isValidId(projectId) && (resource.data.isPublished == true || isAdmin());
+      allow list: if resource.data.isPublished == true || isAdmin();
+      
+      // Only admins can create, update, or delete projects
+      allow create: if isValidId(projectId) && isAdmin() && isValidProject(incoming());
+      allow update: if isValidId(projectId) && isAdmin() && isValidProject(incoming());
+      allow delete: if isValidId(projectId) && isAdmin();
+    }
+
+    // Services Collection
+    match /services/{serviceId} {
+      allow get: if isValidId(serviceId);
+      allow list: if true;
+      allow create: if isValidId(serviceId) && isAdmin() && isValidService(incoming());
+      allow update: if isValidId(serviceId) && isAdmin() && isValidService(incoming());
+      allow delete: if isValidId(serviceId) && isAdmin();
+    }
+
+    // Customer Inquiries Collection
+    match /inquiries/{inquiryId} {
+      // Anyone can submit a valid inquiry (create)
+      allow create: if isValidId(inquiryId) && isValidInquiry(incoming());
+      
+      // ONLY admins can view, update status, or delete inquiries to protect customer PII
+      allow get: if isValidId(inquiryId) && isAdmin();
+      allow list: if isAdmin();
+      allow update: if isValidId(inquiryId) && isAdmin() && isValidInquiry(incoming());
+      allow delete: if isValidId(inquiryId) && isAdmin();
+    }
+
+    // Site Settings Collection
+    match /settings/{settingId} {
+      allow get: if isValidId(settingId);
+      allow list: if true;
+      allow create, update: if isValidId(settingId) && isAdmin() && isValidSetting(incoming());
+      allow delete: if isValidId(settingId) && isAdmin();
+    }
+
+    // Admins Collection
+    match /admins/{adminId} {
+      allow get: if isValidId(adminId) && isSignedIn() && (request.auth.uid == adminId || isAdmin());
+      allow list: if isAdmin();
+      allow create, update, delete: if isValidId(adminId) && isAdmin();
+    }
+  }
+}

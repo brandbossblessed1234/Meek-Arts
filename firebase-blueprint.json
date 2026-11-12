@@ -1,0 +1,104 @@
+{
+  "entities": {
+    "Project": {
+      "title": "Portfolio Project",
+      "description": "Custom 3D art or sculpture project completed by Meek Studio 3D Art",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 150 },
+        "description": { "type": "string", "maxLength": 4000 },
+        "category": { "type": "string", "maxLength": 60 },
+        "coverImage": { "type": "string", "maxLength": 2048 },
+        "images": { "type": "array" },
+        "completionDate": { "type": "string", "maxLength": 30 },
+        "isFeatured": { "type": "boolean" },
+        "isPublished": { "type": "boolean" },
+        "order": { "type": "number" },
+        "createdAt": { "type": "string", "maxLength": 50 },
+        "updatedAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["title", "description", "category", "coverImage", "isPublished"]
+    },
+    "Service": {
+      "title": "Studio Service",
+      "description": "Sculpture and custom 3D art services offered by Meek Studio",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 150 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "imageUrl": { "type": "string", "maxLength": 2048 },
+        "startingPrice": { "type": "string", "maxLength": 50 },
+        "order": { "type": "number" },
+        "createdAt": { "type": "string", "maxLength": 50 },
+        "updatedAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["name", "description"]
+    },
+    "Inquiry": {
+      "title": "Customer Inquiry",
+      "description": "Order inquiries and artwork requests submitted by customers",
+      "type": "object",
+      "properties": {
+        "customerName": { "type": "string", "maxLength": 100 },
+        "contactNumber": { "type": "string", "maxLength": 30 },
+        "artworkType": { "type": "string", "maxLength": 60 },
+        "description": { "type": "string", "maxLength": 4000 },
+        "referenceImage": { "type": "string", "maxLength": 2048 },
+        "status": { "type": "string", "enum": ["New", "Contacted", "Completed"] },
+        "createdAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["customerName", "contactNumber", "artworkType", "description", "status", "createdAt"]
+    },
+    "Setting": {
+      "title": "Website Setting",
+      "description": "Editable business branding, text, contacts, and configuration",
+      "type": "object",
+      "properties": {
+        "businessName": { "type": "string", "maxLength": 100 },
+        "headline": { "type": "string", "maxLength": 200 },
+        "supportingText": { "type": "string", "maxLength": 500 },
+        "bibleVerse": { "type": "string", "maxLength": 300 },
+        "bibleReference": { "type": "string", "maxLength": 100 },
+        "aboutTitle": { "type": "string", "maxLength": 200 },
+        "aboutText": { "type": "string", "maxLength": 5000 },
+        "contactNumber": { "type": "string", "maxLength": 50 },
+        "location": { "type": "string", "maxLength": 200 },
+        "facebookUrl": { "type": "string", "maxLength": 500 },
+        "updatedAt": { "type": "string", "maxLength": 50 }
+      }
+    },
+    "Admin": {
+      "title": "Admin Role",
+      "description": "Authenticated administrator records",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "maxLength": 200 },
+        "role": { "type": "string", "maxLength": 50 },
+        "createdAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["email", "role"]
+    }
+  },
+  "firestore": {
+    "/projects/{projectId}": {
+      "schema": "Project",
+      "description": "Public and draft portfolio projects created by the studio"
+    },
+    "/services/{serviceId}": {
+      "schema": "Service",
+      "description": "Custom sculpture and 3D art services"
+    },
+    "/inquiries/{inquiryId}": {
+      "schema": "Inquiry",
+      "description": "Inquiries submitted by customers"
+    },
+    "/settings/{settingId}": {
+      "schema": "Setting",
+      "description": "Studio configuration and dynamic website copy"
+    },
+    "/admins/{adminId}": {
+      "schema": "Admin",
+      "description": "Admin authorization records"
+    }
+  }
+}
