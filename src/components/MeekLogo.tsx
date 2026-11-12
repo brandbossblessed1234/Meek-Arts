@@ -14,7 +14,6 @@ export const MeekLogo: React.FC<MeekLogoProps> = ({
   onAdminTrigger
 }) => {
   const [clickCount, setClickCount] = useState(0);
-  const [showHint, setShowHint] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const iconSizes = {
@@ -53,20 +52,15 @@ export const MeekLogo: React.FC<MeekLogoProps> = ({
 
     if (nextCount >= 5) {
       setClickCount(0);
-      setShowHint(false);
       onAdminTrigger();
       return;
     }
 
     setClickCount(nextCount);
-    if (nextCount >= 3) {
-      setShowHint(true);
-    }
 
     // Reset after 3 seconds of inactivity
     timerRef.current = setTimeout(() => {
       setClickCount(0);
-      setShowHint(false);
     }, 3000);
   };
 
@@ -117,13 +111,6 @@ export const MeekLogo: React.FC<MeekLogoProps> = ({
           <span className={`font-sans uppercase font-medium text-amber-500/90 ${subSizes[size]}`}>
             3D ART · SCULPTURES
           </span>
-        </div>
-      )}
-
-      {/* Secret click feedback tooltip on 3rd or 4th click */}
-      {showHint && (
-        <div className="absolute -bottom-7 left-0 px-2 py-0.5 rounded bg-neutral-900 border border-amber-500/50 text-[10px] font-mono text-amber-400 tracking-wider whitespace-nowrap shadow-xl z-50 animate-pulse">
-          {5 - clickCount} more {5 - clickCount === 1 ? 'click' : 'clicks'} for Admin...
         </div>
       )}
     </div>

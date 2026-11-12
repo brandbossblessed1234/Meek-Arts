@@ -28,7 +28,14 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const BOOTSTRAP_ADMIN_EMAIL = 'valpeterjames@gmail.com';
-const DEFAULT_ADMIN_USERNAMES = ['admin', 'meekstudio', 'valpeterjames@gmail.com'];
+const DEFAULT_ADMIN_USERNAMES = [
+  'admin',
+  'meekstudio',
+  'meek',
+  'meekadmin',
+  'meekstudio3dart',
+  'valpeterjames@gmail.com'
+];
 const DEFAULT_ADMIN_PASSWORD = 'meekstudio3dart';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -88,11 +95,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Direct Username and Password Authentication
   const loginWithCredentials = (username: string, pass: string): boolean => {
     clearError();
-    const storedPass = localStorage.getItem('meek_admin_custom_password') || DEFAULT_ADMIN_PASSWORD;
+    const storedPass = (localStorage.getItem('meek_admin_custom_password') || DEFAULT_ADMIN_PASSWORD).trim();
     const cleanUser = username.trim().toLowerCase();
+    const cleanPass = pass.trim();
 
     const isUserValid = DEFAULT_ADMIN_USERNAMES.some(u => u.toLowerCase() === cleanUser);
-    const isPassValid = pass === storedPass || pass === DEFAULT_ADMIN_PASSWORD;
+    const isPassValid = cleanPass === storedPass || cleanPass === DEFAULT_ADMIN_PASSWORD || cleanPass.toLowerCase() === DEFAULT_ADMIN_PASSWORD.toLowerCase();
 
     if (isUserValid && isPassValid) {
       setIsAdmin(true);
@@ -101,7 +109,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       sessionStorage.setItem('meek_admin_username', cleanUser);
       return true;
     } else {
-      setError('Invalid username or password. Default username: "admin", password: "meekstudio3dart"');
+      setError('Invalid username or password. Please verify your credentials and try again.');
       return false;
     }
   };

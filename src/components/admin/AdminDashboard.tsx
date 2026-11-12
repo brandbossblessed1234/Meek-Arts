@@ -26,7 +26,14 @@ import {
   Database,
   ExternalLink,
   Phone,
-  UserCheck
+  UserCheck,
+  Search,
+  MessageSquare,
+  Copy,
+  Check,
+  Sparkles,
+  Filter,
+  X
 } from 'lucide-react';
 
 interface AdminDashboardProps {
@@ -60,6 +67,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
     saveService, 
     deleteService, 
     updateSettings, 
+    submitInquiry,
     updateInquiryStatus, 
     deleteInquiry, 
     uploadImage, 
@@ -70,11 +78,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
 
   const [activeTab, setActiveTab] = useState<TabType>('overview');
 
-  // Username & Password login state
-  const [usernameInput, setUsernameInput] = useState('admin');
+  // Username & Password login state (empty default - no credentials shown on site)
+  const [usernameInput, setUsernameInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [newAdminPassword, setNewAdminPassword] = useState('');
   const [passwordChangeSuccess, setPasswordChangeSuccess] = useState(false);
+
+  // Inquiries Filter and Search state
+  const [inquiryStatusFilter, setInquiryStatusFilter] = useState<'All' | 'New' | 'Contacted' | 'Completed'>('All');
+  const [inquirySearch, setInquirySearch] = useState('');
+  const [copiedInquiryPhoneId, setCopiedInquiryPhoneId] = useState<string | null>(null);
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+  const [generatingTestInquiry, setGeneratingTestInquiry] = useState(false);
 
   // Email form state fallback
   const [emailInput, setEmailInput] = useState('');
@@ -360,20 +376,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
               Studio Owner Portal
             </h1>
             <p className="text-xs text-neutral-400">
-              Sign in with your username and password to manage portfolio artworks, services, content, and inquiries.
+              Sign in with your administrator credentials to manage portfolio artworks, services, content, and inquiries.
             </p>
-          </div>
-
-          {/* Credentials Info Callout */}
-          <div className="p-3.5 rounded-xl bg-neutral-950/80 border border-amber-500/30 text-xs text-neutral-300 space-y-1.5">
-            <div className="flex items-center justify-between text-amber-400 font-semibold uppercase tracking-wider text-[11px]">
-              <span>Official Admin Credentials</span>
-              <span className="text-[10px] text-neutral-500 font-mono">Meek Studio</span>
-            </div>
-            <div className="grid grid-cols-2 gap-2 text-[11px] font-mono pt-1 text-neutral-300">
-              <div>User: <strong className="text-amber-300">admin</strong></div>
-              <div>Pass: <strong className="text-amber-300">meekstudio3dart</strong></div>
-            </div>
           </div>
 
           {(loginError || authError) && (
@@ -389,7 +393,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
               setLoginError(null);
               const ok = loginWithCredentials(usernameInput, passwordInput);
               if (!ok) {
-                setLoginError('Invalid username or password. Please use: admin / meekstudio3dart');
+                setLoginError('Invalid username or password. Please try again.');
               }
             }} 
             className="space-y-4 text-left"
@@ -401,10 +405,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
               <input
                 type="text"
                 required
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
                 value={usernameInput}
                 onChange={(e) => setUsernameInput(e.target.value)}
-                placeholder="admin"
-                className="w-full px-3.5 py-2.5 rounded-lg bg-neutral-950 border border-neutral-800 text-neutral-100 text-sm focus:outline-none focus:border-amber-400 font-mono"
+                placeholder="Enter username"
+                className="w-full px-3.5 py-2.5 rounded-lg bg-neutral-950 border border-neutral-800 text-neutral-100 text-sm focus:outline-none focus:border-amber-400 font-sans"
               />
             </div>
 
@@ -412,34 +419,36 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
               <label className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-300 mb-1">
                 Password
               </label>
-              <input
-                type="password"
-                required
-                value={passwordInput}
-                onChange={(e) => setPasswordInput(e.target.value)}
-                placeholder="••••••••••••"
-                className="w-full px-3.5 py-2.5 rounded-lg bg-neutral-950 border border-neutral-800 text-neutral-100 text-sm focus:outline-none focus:border-amber-400"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  value={passwordInput}
+                  onChange={(e) => setPasswordInput(e.target.value)}
+                  placeholder="••••••••••••"
+                  className="w-full px-3.5 py-2.5 pr-10 rounded-lg bg-neutral-950 border border-neutral-800 text-neutral-100 text-sm focus:outline-none focus:border-amber-400 font-sans"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-300 transition-colors p-1"
+                  title={showPassword ? 'Hide password' : 'Show password'}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
             </div>
 
-            <div className="space-y-2 pt-1">
+            <div className="pt-2">
               <button
                 type="submit"
-                className="w-full py-3 text-xs font-bold uppercase tracking-wider text-neutral-950 bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 rounded-lg hover:from-amber-200 hover:to-amber-400 transition-all flex items-center justify-center gap-2 shadow-md"
+                className="w-full py-3.5 text-xs font-bold uppercase tracking-wider text-neutral-950 bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 rounded-lg hover:from-amber-200 hover:to-amber-400 transition-all flex items-center justify-center gap-2 shadow-md active:scale-98"
               >
-                <span>Sign In as Admin</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setUsernameInput('admin');
-                  setPasswordInput('meekstudio3dart');
-                  loginWithCredentials('admin', 'meekstudio3dart');
-                }}
-                className="w-full py-2.5 text-xs font-semibold uppercase tracking-wider text-amber-300 bg-neutral-950 hover:bg-neutral-850 border border-amber-500/40 rounded-lg transition-colors flex items-center justify-center gap-2"
-              >
-                <span>One-Click Quick Login (admin)</span>
+                <span>Sign In</span>
               </button>
             </div>
           </form>
@@ -502,7 +511,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
               </span>
             </h1>
             <span className="text-[10px] text-neutral-400 font-mono hidden sm:inline">
-              Logged in: {user?.email || adminUsername || 'admin'}
+              Studio Owner Portal
             </span>
           </div>
         </div>
@@ -1475,12 +1484,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
                   <span>Admin Credentials & Security</span>
                 </div>
                 <p className="text-xs text-neutral-400">
-                  Default Username: <strong className="text-amber-300 font-mono">admin</strong>. You can update your custom administrator password below.
+                  Update your custom administrator password below to keep your studio management portal secure.
                 </p>
 
                 {passwordChangeSuccess && (
-                  <div className="p-3.5 rounded-lg bg-emerald-950/60 border border-emerald-500/40 text-emerald-200 text-xs">
-                    Admin password successfully updated!
+                  <div className="p-3.5 rounded-lg bg-emerald-950/60 border border-emerald-500/40 text-emerald-200 text-xs flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-emerald-400" />
+                    <span>Admin password successfully updated!</span>
                   </div>
                 )}
 
@@ -1515,125 +1525,361 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
           )}
 
           {/* TAB E: INQUIRY MANAGEMENT */}
-          {activeTab === 'inquiries' && (
-            <div className="space-y-6 max-w-6xl">
-              <div className="pb-4 border-b border-neutral-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                  <h2 className="font-heading text-xl sm:text-2xl font-bold uppercase text-neutral-100">
-                    Customer Inquiries
-                  </h2>
-                  <p className="text-xs text-neutral-400 mt-1">
-                    Manage commission requests submitted through the public website. Customer PII is protected in Cloud Firestore.
-                  </p>
-                </div>
+          {activeTab === 'inquiries' && (() => {
+            const newCount = inquiries.filter(i => i.status === 'New').length;
+            const contactedCount = inquiries.filter(i => i.status === 'Contacted').length;
+            const completedCount = inquiries.filter(i => i.status === 'Completed').length;
 
-                <div className="flex items-center gap-2 text-xs font-mono text-neutral-400">
-                  <span>Total: {inquiries.length}</span>
-                  <span>·</span>
-                  <span className="text-amber-400">{inquiries.filter(i => i.status === 'New').length} pending review</span>
-                </div>
-              </div>
+            const filteredInquiries = inquiries.filter(inquiry => {
+              // Status filter
+              if (inquiryStatusFilter !== 'All' && inquiry.status !== inquiryStatusFilter) {
+                return false;
+              }
+              // Search query filter
+              if (inquirySearch.trim()) {
+                const q = inquirySearch.toLowerCase();
+                const matchName = inquiry.customerName?.toLowerCase().includes(q);
+                const matchPhone = inquiry.contactNumber?.toLowerCase().includes(q);
+                const matchType = inquiry.artworkType?.toLowerCase().includes(q);
+                const matchDesc = inquiry.description?.toLowerCase().includes(q);
+                return matchName || matchPhone || matchType || matchDesc;
+              }
+              return true;
+            });
 
-              {inquiries.length === 0 ? (
-                <div className="p-12 rounded-2xl bg-neutral-900 border border-neutral-800 text-center space-y-2">
-                  <Inbox className="w-10 h-10 text-neutral-600 mx-auto" />
-                  <h3 className="font-heading text-base font-bold uppercase text-neutral-300">
-                    No Customer Inquiries Yet
-                  </h3>
-                  <p className="text-xs text-neutral-500">
-                    When visitors submit custom artwork requests on the public website, they will appear here with contact numbers and reference photos.
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {inquiries.map((inquiry) => (
-                    <div
-                      key={inquiry.id}
-                      className="p-6 rounded-2xl bg-neutral-900 border border-neutral-800 space-y-4 shadow-md"
+            const handleCreateTestInquiry = async () => {
+              setGeneratingTestInquiry(true);
+              try {
+                await submitInquiry({
+                  customerName: 'Engr. Marco Villanueva',
+                  contactNumber: '09178889922',
+                  artworkType: 'Display Sculptures',
+                  description: 'Inquiring for a 2-meter tall custom bronze and black Dinagyang warrior sculpture with custom pedestal for our hotel lobby in Mandurriao, Iloilo City. Need quote and production timeline.',
+                  referenceImage: '/assets/aistudio/825278790_1025978370475594_8031018495389838943_n_238b4cc5.jpg'
+                });
+              } catch (err) {
+                console.error('Error creating test inquiry:', err);
+              } finally {
+                setGeneratingTestInquiry(false);
+              }
+            };
+
+            const copyPhoneNumber = (id: string, phone: string) => {
+              navigator.clipboard.writeText(phone);
+              setCopiedInquiryPhoneId(id);
+              setTimeout(() => setCopiedInquiryPhoneId(null), 2500);
+            };
+
+            return (
+              <div className="space-y-6 max-w-6xl">
+                
+                {/* Header & Stats */}
+                <div className="pb-4 border-b border-neutral-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div>
+                    <h2 className="font-heading text-xl sm:text-2xl font-bold uppercase text-neutral-100 flex items-center gap-3">
+                      <span>Customer Commission Inquiries</span>
+                      {newCount > 0 && (
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-400 text-neutral-950 animate-pulse">
+                          {newCount} NEW
+                        </span>
+                      )}
+                    </h2>
+                    <p className="text-xs text-neutral-400 mt-1">
+                      Direct client requests submitted through the public commission form. Client contact numbers and references are stored securely.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3 shrink-0">
+                    <button
+                      onClick={handleCreateTestInquiry}
+                      disabled={generatingTestInquiry}
+                      className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-neutral-900 border border-neutral-700 hover:border-amber-400 text-neutral-300 hover:text-amber-400 text-xs font-semibold uppercase tracking-wider transition-colors"
+                      title="Add a sample inquiry to preview formatting"
                     >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-neutral-800">
-                        <div>
-                          <div className="flex items-center gap-3">
-                            <h3 className="font-heading text-base font-bold text-neutral-100">
-                              {inquiry.customerName}
-                            </h3>
-                            <a
-                              href={`tel:${inquiry.contactNumber.replace(/[^0-9]/g, '')}`}
-                              className="text-xs font-mono text-amber-400 hover:underline flex items-center gap-1"
-                            >
-                              <Phone className="w-3 h-3" />
-                              <span>{inquiry.contactNumber}</span>
-                            </a>
-                          </div>
-                          <span className="text-[11px] text-neutral-400">
-                            Artwork: <strong className="text-neutral-200">{inquiry.artworkType}</strong> · Received: {new Date(inquiry.createdAt).toLocaleString()}
-                          </span>
-                        </div>
-
-                        {/* Status Switcher */}
-                        <div className="flex items-center gap-2">
-                          {(['New', 'Contacted', 'Completed'] as const).map((status) => (
-                            <button
-                              key={status}
-                              onClick={() => updateInquiryStatus(inquiry.id, status)}
-                              className={`px-3 py-1 rounded text-xs font-bold uppercase tracking-wider transition-colors ${
-                                inquiry.status === status
-                                  ? status === 'New' ? 'bg-amber-500 text-neutral-950' : 
-                                    status === 'Contacted' ? 'bg-blue-500 text-neutral-950' : 
-                                    'bg-emerald-500 text-neutral-950'
-                                  : 'bg-neutral-950 text-neutral-400 hover:text-neutral-200 border border-neutral-800'
-                              }`}
-                            >
-                              {status}
-                            </button>
-                          ))}
-
-                          <button
-                            onClick={() => deleteInquiry(inquiry.id)}
-                            className="p-1.5 rounded text-neutral-500 hover:text-rose-400 transition-colors ml-2"
-                            title="Delete Inquiry"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Description & Reference Image */}
-                      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start">
-                        <div className="md:col-span-9 text-xs sm:text-sm text-neutral-300 leading-relaxed font-light whitespace-pre-line bg-neutral-950 p-4 rounded-xl border border-neutral-800/80">
-                          {inquiry.description}
-                        </div>
-
-                        {inquiry.referenceImage && (
-                          <div className="md:col-span-3">
-                            <span className="text-[10px] uppercase font-bold tracking-wider text-amber-400 block mb-1">
-                              Reference Photo
-                            </span>
-                            <a
-                              href={inquiry.referenceImage}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="block aspect-[4/3] rounded-lg overflow-hidden border border-neutral-800 bg-neutral-950 group relative"
-                            >
-                              <img
-                                src={inquiry.referenceImage}
-                                alt="Reference"
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                              />
-                              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-white text-xs">
-                                <ExternalLink className="w-4 h-4" />
-                              </div>
-                            </a>
-                          </div>
-                        )}
-                      </div>
-
-                    </div>
-                  ))}
+                      {generatingTestInquiry ? <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-400" /> : <Sparkles className="w-3.5 h-3.5 text-amber-400" />}
+                      <span>Add Test Inquiry</span>
+                    </button>
+                  </div>
                 </div>
-              )}
-            </div>
-          )}
+
+                {/* Filter and Search Bar */}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-neutral-900/60 p-3 rounded-xl border border-neutral-800">
+                  
+                  {/* Status Pills */}
+                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+                    {(
+                      [
+                        { id: 'All', label: 'All Inquiries', count: inquiries.length },
+                        { id: 'New', label: 'New', count: newCount },
+                        { id: 'Contacted', label: 'Contacted', count: contactedCount },
+                        { id: 'Completed', label: 'Completed', count: completedCount },
+                      ] as const
+                    ).map((tab) => (
+                      <button
+                        key={tab.id}
+                        onClick={() => setInquiryStatusFilter(tab.id)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all flex items-center gap-2 whitespace-nowrap ${
+                          inquiryStatusFilter === tab.id
+                            ? 'bg-amber-400 text-neutral-950 font-bold shadow'
+                            : 'bg-neutral-950 text-neutral-400 hover:text-neutral-200 border border-neutral-850'
+                        }`}
+                      >
+                        <span>{tab.label}</span>
+                        <span className={`px-1.5 py-0.2 rounded text-[10px] font-mono ${
+                          inquiryStatusFilter === tab.id
+                            ? 'bg-neutral-950/20 text-neutral-950'
+                            : 'bg-neutral-900 text-neutral-400'
+                        }`}>
+                          {tab.count}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Search Bar */}
+                  <div className="relative flex-1 sm:max-w-xs">
+                    <Search className="w-4 h-4 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      value={inquirySearch}
+                      onChange={(e) => setInquirySearch(e.target.value)}
+                      placeholder="Search name, phone, sculpture..."
+                      className="w-full pl-9 pr-8 py-2 rounded-lg bg-neutral-950 border border-neutral-800 text-xs text-neutral-200 placeholder-neutral-500 focus:outline-none focus:border-amber-400"
+                    />
+                    {inquirySearch && (
+                      <button
+                        onClick={() => setInquirySearch('')}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-300"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+
+                </div>
+
+                {/* Inquiries List */}
+                {filteredInquiries.length === 0 ? (
+                  <div className="p-12 rounded-2xl bg-neutral-900 border border-neutral-800 text-center space-y-4">
+                    <div className="w-14 h-14 rounded-2xl bg-neutral-950 border border-neutral-800 flex items-center justify-center mx-auto text-neutral-600">
+                      <Inbox className="w-7 h-7" />
+                    </div>
+                    <div>
+                      <h3 className="font-heading text-base font-bold uppercase text-neutral-300">
+                        {inquiries.length === 0 ? 'No Customer Inquiries Yet' : 'No Inquiries Match Filters'}
+                      </h3>
+                      <p className="text-xs text-neutral-500 max-w-md mx-auto mt-1">
+                        {inquiries.length === 0
+                          ? 'When patrons submit custom artwork requests on the public site, they will appear here with customer names, mobile numbers, specifications, and reference images.'
+                          : 'Try selecting "All Inquiries" or clearing your search keywords.'}
+                      </p>
+                    </div>
+
+                    {inquiries.length === 0 && (
+                      <button
+                        onClick={handleCreateTestInquiry}
+                        disabled={generatingTestInquiry}
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 text-neutral-950 text-xs font-bold uppercase tracking-wider hover:from-amber-200 hover:to-amber-400 transition-all shadow"
+                      >
+                        <Sparkles className="w-4 h-4" />
+                        <span>Create Sample Inquiry</span>
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {filteredInquiries.map((inquiry) => {
+                      const cleanPhone = inquiry.contactNumber ? inquiry.contactNumber.replace(/[^0-9]/g, '') : '';
+                      const isCopied = copiedInquiryPhoneId === inquiry.id;
+
+                      return (
+                        <div
+                          key={inquiry.id}
+                          className={`p-6 rounded-2xl bg-neutral-900 border transition-all space-y-5 shadow-lg ${
+                            inquiry.status === 'New'
+                              ? 'border-amber-500/40 bg-gradient-to-b from-amber-950/10 to-neutral-900'
+                              : 'border-neutral-800'
+                          }`}
+                        >
+                          {/* Top Row: Client Name, Meta, and Action Buttons */}
+                          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-neutral-800/80">
+                            
+                            <div className="space-y-1.5">
+                              <div className="flex flex-wrap items-center gap-3">
+                                <h3 className="font-heading text-base sm:text-lg font-bold text-neutral-100 uppercase tracking-wide">
+                                  {inquiry.customerName || 'Anonymous Patron'}
+                                </h3>
+                                
+                                {/* Status badge */}
+                                <span className={`px-2.5 py-0.5 rounded-md text-[10px] font-mono font-bold uppercase tracking-wider ${
+                                  inquiry.status === 'New'
+                                    ? 'bg-amber-400/20 text-amber-300 border border-amber-500/40'
+                                    : inquiry.status === 'Contacted'
+                                    ? 'bg-blue-500/20 text-blue-300 border border-blue-500/40'
+                                    : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                                }`}>
+                                  ● {inquiry.status}
+                                </span>
+
+                                {/* Artwork requested chip */}
+                                <span className="px-2.5 py-0.5 rounded-md text-[10px] font-mono text-neutral-300 bg-neutral-950 border border-neutral-800">
+                                  {inquiry.artworkType}
+                                </span>
+                              </div>
+
+                              <div className="text-[11px] text-neutral-400 flex items-center gap-2">
+                                <Clock className="w-3.5 h-3.5 text-neutral-500" />
+                                <span>
+                                  Received: {new Date(inquiry.createdAt).toLocaleString(undefined, {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                  })}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Client Phone Quick Contact Bar */}
+                            <div className="flex flex-wrap items-center gap-2">
+                              {/* Direct Call Button */}
+                              <a
+                                href={`tel:${cleanPhone}`}
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-600/50 text-emerald-200 text-xs font-semibold tracking-wider transition-colors"
+                                title="Call customer phone"
+                              >
+                                <Phone className="w-3.5 h-3.5 text-emerald-400" />
+                                <span>{inquiry.contactNumber}</span>
+                              </a>
+
+                              {/* Send SMS Button */}
+                              <a
+                                href={`sms:${cleanPhone}`}
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-950 hover:bg-neutral-800 border border-neutral-800 hover:border-neutral-700 text-neutral-300 text-xs font-medium transition-colors"
+                                title="Send SMS Text Message"
+                              >
+                                <MessageSquare className="w-3.5 h-3.5 text-blue-400" />
+                                <span className="hidden sm:inline">SMS</span>
+                              </a>
+
+                              {/* Copy Phone */}
+                              <button
+                                onClick={() => copyPhoneNumber(inquiry.id, inquiry.contactNumber)}
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-neutral-950 hover:bg-neutral-800 border border-neutral-800 hover:border-neutral-700 text-neutral-400 hover:text-neutral-200 text-xs transition-colors"
+                                title="Copy mobile number"
+                              >
+                                {isCopied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                                <span className="text-[10px] font-mono">{isCopied ? 'Copied' : 'Copy'}</span>
+                              </button>
+
+                              {/* Delete button */}
+                              <button
+                                onClick={() => {
+                                  if (confirm(`Delete inquiry from ${inquiry.customerName}?`)) {
+                                    deleteInquiry(inquiry.id);
+                                  }
+                                }}
+                                className="p-1.5 rounded-lg text-neutral-500 hover:text-rose-400 hover:bg-neutral-950 transition-colors ml-1"
+                                title="Delete Inquiry"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+
+                          </div>
+
+                          {/* Middle Row: Description & Reference Image */}
+                          <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-start">
+                            <div className="md:col-span-9 space-y-2">
+                              <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400 block">
+                                Commission Project Scope & Details
+                              </span>
+                              <div className="p-4 rounded-xl bg-neutral-950 border border-neutral-800/80 text-xs sm:text-sm text-neutral-200 leading-relaxed font-light whitespace-pre-line">
+                                {inquiry.description}
+                              </div>
+                            </div>
+
+                            {/* Reference Image Preview */}
+                            {inquiry.referenceImage ? (
+                              <div className="md:col-span-3 space-y-2">
+                                <span className="text-[10px] font-semibold uppercase tracking-wider text-amber-400 flex items-center justify-between">
+                                  <span>Reference Photo</span>
+                                  <span className="text-[9px] text-neutral-500 font-normal">Click to zoom</span>
+                                </span>
+                                <div
+                                  onClick={() => setLightboxImage(inquiry.referenceImage || null)}
+                                  className="aspect-[4/3] rounded-xl overflow-hidden border border-neutral-800 bg-neutral-950 cursor-pointer relative group"
+                                >
+                                  <img
+                                    src={inquiry.referenceImage}
+                                    alt="Reference visual"
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                  />
+                                  <div className="absolute inset-0 bg-neutral-950/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-amber-300 text-xs font-semibold gap-1.5">
+                                    <Eye className="w-4 h-4" />
+                                    <span>Inspect</span>
+                                  </div>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="md:col-span-3 p-4 rounded-xl border border-neutral-850 bg-neutral-950/50 text-center">
+                                <span className="text-[11px] text-neutral-500 italic">No reference photo attached</span>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Bottom Row: Status Transition Buttons */}
+                          <div className="pt-3 border-t border-neutral-800 flex flex-wrap items-center justify-between gap-3 text-xs">
+                            <span className="text-neutral-400 text-[11px] font-medium uppercase tracking-wider">
+                              Update Workflow Status:
+                            </span>
+
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => updateInquiryStatus(inquiry.id, 'New')}
+                                className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
+                                  inquiry.status === 'New'
+                                    ? 'bg-amber-400 text-neutral-950 shadow-md ring-1 ring-amber-400'
+                                    : 'bg-neutral-950 text-neutral-400 hover:text-amber-300 border border-neutral-800'
+                                }`}
+                              >
+                                New
+                              </button>
+
+                              <button
+                                onClick={() => updateInquiryStatus(inquiry.id, 'Contacted')}
+                                className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
+                                  inquiry.status === 'Contacted'
+                                    ? 'bg-blue-500 text-neutral-950 shadow-md ring-1 ring-blue-400'
+                                    : 'bg-neutral-950 text-neutral-400 hover:text-blue-300 border border-neutral-800'
+                                }`}
+                              >
+                                Contacted
+                              </button>
+
+                              <button
+                                onClick={() => updateInquiryStatus(inquiry.id, 'Completed')}
+                                className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
+                                  inquiry.status === 'Completed'
+                                    ? 'bg-emerald-500 text-neutral-950 shadow-md ring-1 ring-emerald-400'
+                                    : 'bg-neutral-950 text-neutral-400 hover:text-emerald-300 border border-neutral-800'
+                                }`}
+                              >
+                                Completed
+                              </button>
+                            </div>
+                          </div>
+
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+              </div>
+            );
+          })()}
 
           {/* TAB F: MEDIA LIBRARY */}
           {activeTab === 'media' && (
@@ -1731,6 +1977,49 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
                 className="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold uppercase tracking-wider"
               >
                 Delete Project
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Inquiry Reference Photo Lightbox Modal */}
+      {lightboxImage && (
+        <div 
+          onClick={() => setLightboxImage(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md p-4 sm:p-8 cursor-zoom-out"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()} 
+            className="relative max-w-4xl max-h-[90vh] flex flex-col items-center cursor-default"
+          >
+            <button
+              onClick={() => setLightboxImage(null)}
+              className="absolute -top-12 right-0 p-2 rounded-full bg-neutral-900/90 text-neutral-300 hover:text-white border border-neutral-700 transition-colors"
+              title="Close inspection"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <img
+              src={lightboxImage}
+              alt="Client Reference High-Res"
+              className="max-h-[80vh] w-auto max-w-full rounded-2xl object-contain border border-neutral-800 shadow-2xl"
+            />
+            <div className="mt-4 flex items-center gap-4">
+              <a
+                href={lightboxImage}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-neutral-900 border border-neutral-700 text-xs font-semibold uppercase tracking-wider text-neutral-200 hover:text-amber-400 transition-colors"
+              >
+                <ExternalLink className="w-4 h-4 text-amber-400" />
+                <span>Open Original Image</span>
+              </a>
+              <button
+                onClick={() => setLightboxImage(null)}
+                className="px-4 py-2 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-xs font-semibold uppercase tracking-wider text-neutral-300 transition-colors"
+              >
+                Close Preview
               </button>
             </div>
           </div>
