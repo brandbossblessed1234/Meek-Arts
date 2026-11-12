@@ -30,6 +30,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const BOOTSTRAP_ADMIN_EMAIL = 'valpeterjames@gmail.com';
 const DEFAULT_ADMIN_USERNAMES = [
   'admin',
+  'meekarts',
+  'meekarts3d',
   'meekstudio',
   'meek',
   'meekadmin',

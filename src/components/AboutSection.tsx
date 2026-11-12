@@ -16,7 +16,7 @@ export const AboutSection: React.FC = () => {
         <div className="max-w-3xl mb-16 text-left">
           <div className="flex items-center gap-2 text-xs uppercase font-bold tracking-[0.25em] text-amber-400 mb-3">
             <span className="w-6 h-[1.5px] bg-amber-400" />
-            <span>About Meek Studio</span>
+            <span>About Meek Arts</span>
           </div>
 
           <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-extrabold uppercase tracking-wide text-neutral-100">
@@ -31,7 +31,7 @@ export const AboutSection: React.FC = () => {
           <div className="lg:col-span-7 space-y-6 text-neutral-300 text-base sm:text-lg font-light leading-relaxed">
             <p className="first-letter:text-5xl first-letter:font-serif first-letter:text-amber-400 first-letter:font-bold first-letter:float-left first-letter:mr-3 first-letter:leading-none">
               {settings.aboutText || 
-                'Meek Studio 3D Art is a creative studio based in Iloilo City, specializing in unique 3D art, custom sculptures, collectible figures, and creative artwork. We transform ideas and imagination into tangible works of art through creativity, craftsmanship, and attention to detail.'
+                'Meek Arts is a premier creative studio based in Iloilo City, currently specializing in custom 3D art, unique sculptures, collectible figures, and extraordinary display pieces. We transform ideas and imagination into tangible works of art through creativity, craftsmanship, and attention to detail.'
               }
             </p>
 
@@ -72,7 +72,7 @@ export const AboutSection: React.FC = () => {
               <div className="aspect-[4/3] w-full overflow-hidden">
                 <img
                   src="/assets/aistudio/773167137_984629687943796_2392283727810284078_n_8d92f796.jpg"
-                  alt="Meek Studio 3D Art Workshop"
+                  alt="Meek Arts 3D Workshop"
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />

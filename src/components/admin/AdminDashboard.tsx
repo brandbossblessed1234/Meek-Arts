@@ -366,11 +366,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
         <div className="w-full max-w-md bg-neutral-900 border border-neutral-800 rounded-2xl p-8 shadow-2xl space-y-6">
           
           <div className="text-center space-y-2">
-            <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto text-amber-400 mb-3">
-              <ShieldCheck className="w-6 h-6" />
+            <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-amber-500/50 shadow-[0_0_25px_rgba(212,175,55,0.35)] mx-auto mb-3 bg-neutral-950 p-0.5">
+              <img
+                src="/assets/aistudio/759034263_973317582408340_6684353305294085176_n__1__27edce82.jpg"
+                alt="Meek Arts"
+                className="w-full h-full object-cover rounded-full"
+              />
             </div>
             <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-amber-400 block">
-              Meek Studio 3D Art
+              Meek Arts – 3D Art
             </span>
             <h1 className="font-heading text-xl font-bold uppercase tracking-wide text-neutral-100">
               Studio Owner Portal
@@ -503,16 +507,25 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
             <ArrowLeft className="w-4 h-4" />
           </button>
           
-          <div>
-            <h1 className="font-heading text-sm sm:text-base font-bold uppercase text-neutral-100 tracking-wider flex items-center gap-2">
-              <span>MEEK STUDIO</span>
-              <span className="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/40 text-[10px] font-mono">
-                ADMIN
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full overflow-hidden border border-amber-400/50 shadow-[0_0_12px_rgba(212,175,55,0.25)] bg-neutral-950 shrink-0">
+              <img
+                src="/assets/aistudio/759034263_973317582408340_6684353305294085176_n__1__27edce82.jpg"
+                alt="Meek Studio Emblem"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div>
+              <h1 className="font-heading text-sm sm:text-base font-bold uppercase text-neutral-100 tracking-wider flex items-center gap-2">
+                <span>MEEK ARTS</span>
+                <span className="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/40 text-[10px] font-mono">
+                  ADMIN
+                </span>
+              </h1>
+              <span className="text-[10px] text-neutral-400 font-mono hidden sm:inline">
+                Studio Owner Portal
               </span>
-            </h1>
-            <span className="text-[10px] text-neutral-400 font-mono hidden sm:inline">
-              Studio Owner Portal
-            </span>
+            </div>
           </div>
         </div>
 
@@ -645,7 +658,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite }) 
                   Studio Dashboard Overview
                 </h2>
                 <p className="text-xs text-neutral-400 mt-1">
-                  Live metrics for Meek Studio 3D Art web operations and client engagement.
+                  Live metrics for Meek Arts web operations and client engagement.
                 </p>
               </div>
 

@@ -15,15 +15,15 @@ import { db, storage, handleFirestoreError, OperationType } from '../firebase';
 import { Project, Service, Inquiry, SiteSettings, MediaItem } from '../types';
 import { useAuth } from './AuthContext';
 
-// Default initial data for Meek Studio 3D Art
+// Default initial data for Meek Arts (Currently specializing in 3D Art)
 export const DEFAULT_SETTINGS: SiteSettings = {
-  businessName: 'MEEK STUDIO 3D ART',
-  headline: 'BRING YOUR IMAGINATION TO LIFE.',
+  businessName: 'MEEK ARTS',
+  headline: 'WHERE IMAGINATION TAKES FORM.',
   supportingText: 'Custom 3D Art. Creative Sculptures. Extraordinary Details.',
   bibleVerse: 'Blessed are the meek: for they shall inherit the earth.',
   bibleReference: 'Matthew 5:5',
   aboutTitle: 'THE ART OF BRINGING IDEAS TO LIFE',
-  aboutText: 'Meek Studio 3D Art is a creative studio based in Iloilo City, specializing in unique 3D art, custom sculptures, collectible figures, and creative artwork. We transform ideas and imagination into tangible works of art through creativity, craftsmanship, and attention to detail.',
+  aboutText: 'Meek Arts is a premier creative studio based in Iloilo City, currently specializing in custom 3D art, unique sculptures, collectible figures, and extraordinary display pieces. We transform ideas and imagination into tangible works of art through creativity, craftsmanship, and attention to detail.',
   contactNumber: '09385667572',
   location: 'Iloilo City, Philippines',
   facebookUrl: 'https://www.facebook.com/profile.php?id=100091903210785',

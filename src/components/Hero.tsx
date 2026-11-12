@@ -38,11 +38,17 @@ export const Hero: React.FC<HeroProps> = ({ onOpenOrderModal, onNavigateToAdmin 
             {/* Headline */}
             <div className="space-y-4">
               <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold uppercase text-neutral-100 tracking-[0.06em] leading-[1.12]">
-                BRING YOUR <br />
-                <span className="gold-gradient-text drop-shadow-[0_4px_24px_rgba(212,175,55,0.3)]">
-                  IMAGINATION
-                </span> <br />
-                TO LIFE.
+                {settings.headline && settings.headline !== 'BRING YOUR IMAGINATION TO LIFE.' && settings.headline !== 'WHERE IMAGINATION TAKES FORM.' ? (
+                  settings.headline
+                ) : (
+                  <>
+                    WHERE <br />
+                    <span className="gold-gradient-text drop-shadow-[0_4px_24px_rgba(212,175,55,0.3)]">
+                      IMAGINATION
+                    </span> <br />
+                    TAKES FORM.
+                  </>
+                )}
               </h1>
 
               <p className="text-base sm:text-lg md:text-xl text-neutral-300 font-light tracking-wide max-w-2xl leading-relaxed">

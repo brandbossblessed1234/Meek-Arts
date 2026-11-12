@@ -105,7 +105,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
         <div className="p-6 border-b border-neutral-800/80 flex items-center justify-between bg-neutral-900/40">
           <div>
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-400 block">
-              Meek Studio 3D Art
+              Meek Arts – 3D Art
             </span>
             <h3 className="font-heading text-lg sm:text-xl font-bold uppercase text-neutral-100">
               Order Custom Artwork
